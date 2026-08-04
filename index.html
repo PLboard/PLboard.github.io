@@ -2596,7 +2596,7 @@
       height: 28px;
       border-radius: 6px;
       color: #fff;
-      font-size: 12px;
+      font-size: 15px;
       font-weight: 950;
     }
 
@@ -2623,10 +2623,10 @@
     }
 
     .pool-race-list .pool-card {
-      flex: 0 0 108px;
+      flex: 0 0 120px;
       grid-template-columns: minmax(0, 1fr) 26px;
       gap: 6px;
-      width: 108px;
+      width: 120px;
       min-height: 40px;
       padding: 6px;
     }
@@ -2636,7 +2636,7 @@
     }
 
     .pool-race-list .pool-card .pool-name strong {
-      font-size: 14px;
+      font-size: 18px;
     }
 
     .pool-race-list .pool-card .icon-btn {
@@ -2649,7 +2649,7 @@
 
     .pool-race-empty {
       color: #b6bfcd;
-      font-size: 12px;
+      font-size: 14px;
       font-weight: 850;
       line-height: 30px;
     }
@@ -2683,6 +2683,185 @@
       .pool-tabs button {
         padding-inline: 8px;
       }
+    }
+
+    /* Larger working scale while preserving the compact board layout. */
+    .panel-header {
+      min-height: 58px;
+      padding: 16px 18px;
+    }
+
+    .panel-header h2 {
+      font-size: 19px;
+    }
+
+    .panel-body {
+      padding: 18px;
+    }
+
+    .field > span,
+    .team-pool-head .label,
+    .side .label,
+    .mini-stat > span,
+    .race-name,
+    .race-count,
+    th {
+      font-size: 15px;
+    }
+
+    input,
+    select,
+    textarea {
+      min-height: 44px;
+      font-size: 16px;
+    }
+
+    .segmented button {
+      min-height: 42px;
+      font-size: 16px;
+    }
+
+    .race-entry input,
+    .race-entry select,
+    .race-entry button {
+      min-height: 40px;
+      font-size: 16px;
+    }
+
+    .btn {
+      min-height: 42px;
+      font-size: 15px;
+    }
+
+    .hint,
+    .winners-status {
+      font-size: 14px;
+    }
+
+    .stat span {
+      font-size: 13px;
+    }
+
+    .stat strong {
+      font-size: 27px;
+    }
+
+    .pool-race-row {
+      grid-template-columns: 32px minmax(0, 1fr);
+      min-height: 46px;
+    }
+
+    .pool-race-code {
+      width: 32px;
+      height: 32px;
+      font-size: 16px;
+    }
+
+    .pool-race-list .pool-card {
+      flex-basis: 128px;
+      width: 128px;
+      min-height: 44px;
+    }
+
+    .pool-race-list .pool-card .pool-name strong {
+      font-size: 19px;
+    }
+
+    .team-box .team-top {
+      min-height: 48px;
+      padding: 12px 14px;
+    }
+
+    .team-name {
+      font-size: 18px;
+    }
+
+    .slots {
+      min-height: 54px;
+      padding: 7px;
+    }
+
+    .slot {
+      flex-basis: 132px;
+      height: 40px;
+      min-height: 40px;
+      padding: 5px;
+    }
+
+    .slot.player-slot {
+      grid-template-columns: 24px minmax(0, 4em) 24px;
+    }
+
+    .slot .name {
+      font-size: 16px;
+    }
+
+    .slot-placeholder .name {
+      font-size: 14px;
+    }
+
+    .mini-stat {
+      min-height: 72px;
+      padding: 13px 14px;
+    }
+
+    .mini-stat strong {
+      font-size: 24px;
+    }
+
+    th,
+    td {
+      padding-block: 12px;
+    }
+
+    td {
+      font-size: 16px;
+    }
+
+    .member-name strong {
+      font-size: 17px;
+    }
+
+    .member-name span {
+      font-size: 13px;
+    }
+
+    .inline-input {
+      min-height: 40px;
+      font-size: 16px;
+    }
+
+    .role-item {
+      grid-template-columns: 36px minmax(0, 1fr) auto;
+      padding: 11px;
+    }
+
+    .role-item .position {
+      width: 32px;
+      height: 32px;
+      font-size: 15px;
+    }
+
+    .role-item strong {
+      font-size: 16px;
+    }
+
+    .role-item span,
+    .room-maker span {
+      font-size: 13px;
+    }
+
+    .reference-link {
+      min-height: 46px;
+      font-size: 15px;
+    }
+
+    .export-box {
+      min-height: 46px;
+      height: 46px;
+      max-height: 46px;
+      font-size: 17px;
+      line-height: 26px;
     }
   </style>
 </head>
@@ -2747,6 +2926,30 @@
     <section class="middle">
       <section class="panel">
         <div class="panel-header">
+          <h2>펀딩 순위</h2>
+          <div class="actions">
+            <button class="btn ghost" id="resetRoleOrderBtn" type="button">펀딩순</button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>순위</th>
+                <th>멤버</th>
+                <th>종족</th>
+                <th>펀딩</th>
+                <th>역할</th>
+              </tr>
+            </thead>
+            <tbody id="rankingBody"></tbody>
+          </table>
+        </div>
+        <p class="hint ranking-hint">펀딩 개수가 동일하면 행을 드래그해서 위치를 바꿀 수 있습니다.</p>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
           <h2>팀 선택 구성</h2>
           <div class="actions">
             <button class="btn" id="autoTeamBtn" type="button">자동배분</button>
@@ -2788,30 +2991,6 @@
             </div>
           </div>
         </div>
-      </section>
-
-      <section class="panel">
-        <div class="panel-header">
-          <h2>펀딩 순위</h2>
-          <div class="actions">
-            <button class="btn ghost" id="resetRoleOrderBtn" type="button">펀딩순</button>
-          </div>
-        </div>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>순위</th>
-                <th>멤버</th>
-                <th>종족</th>
-                <th>펀딩</th>
-                <th>역할</th>
-              </tr>
-            </thead>
-            <tbody id="rankingBody"></tbody>
-          </table>
-        </div>
-        <p class="hint ranking-hint">펀딩 개수가 동일하면 행을 드래그해서 위치를 바꿀 수 있습니다.</p>
       </section>
     </section>
 
