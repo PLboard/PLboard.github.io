@@ -149,6 +149,16 @@
       color: var(--good);
     }
 
+    #winnersStat:not(.is-open) {
+      border-color: rgba(224, 70, 93, 0.32);
+      border-top: 3px solid var(--bad);
+      background: #fff5f7;
+    }
+
+    #winnersStat:not(.is-open) strong {
+      color: var(--bad);
+    }
+
     .panel {
       background: var(--panel);
       border: 1px solid var(--line);
@@ -2975,7 +2985,7 @@
       min-height: 46px;
       height: 46px;
       max-height: 46px;
-      font-size: 17px;
+      font-size: 16px;
       line-height: 26px;
     }
 
