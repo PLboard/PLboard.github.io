@@ -2181,6 +2181,26 @@
       line-height: 1.4;
     }
 
+    .team-selection-panel,
+    .team-selection-panel * {
+      -webkit-user-select: none;
+      user-select: none;
+    }
+
+    .pool-card *,
+    .slot.player-slot * {
+      -webkit-user-drag: none;
+    }
+
+    .team-drag-ghost {
+      position: fixed !important;
+      top: -1000px !important;
+      left: -1000px !important;
+      width: 120px !important;
+      opacity: 0.92 !important;
+      pointer-events: none !important;
+    }
+
     .slot-placeholder {
       grid-template-columns: 26px minmax(0, 1fr);
       color: #9aa3b5;
@@ -2995,7 +3015,7 @@
     }
 
     .ranking-panel .panel-header h2 {
-      font-size: 18px;
+      font-size: 21px;
     }
 
     .ranking-panel .panel-header .btn {
@@ -3007,6 +3027,14 @@
     .ranking-panel th,
     .ranking-panel td {
       padding-block: 6px;
+    }
+
+    .ranking-panel th {
+      font-size: 16px;
+    }
+
+    .ranking-panel td {
+      font-size: 18px;
     }
 
     .ranking-panel .member-cell {
@@ -3021,17 +3049,63 @@
     }
 
     .ranking-panel .rank-cell {
-      font-size: 16px;
+      font-size: 20px;
     }
 
     .ranking-panel .rank-cell.winner {
-      font-size: 21px;
+      font-size: 26px;
     }
 
     .ranking-panel .inline-input {
-      min-height: 34px;
-      height: 34px;
-      padding: 4px 6px;
+      min-width: 104px;
+      max-width: 124px;
+      min-height: 40px;
+      height: 40px;
+      padding: 2px 5px;
+      font-size: 26px;
+      font-weight: 950;
+      text-align: right;
+      appearance: textfield;
+    }
+
+    .ranking-panel .inline-input::-webkit-inner-spin-button,
+    .ranking-panel .inline-input::-webkit-outer-spin-button {
+      margin: 0;
+      -webkit-appearance: none;
+    }
+
+    .ranking-panel th:nth-child(2),
+    .ranking-panel td:nth-child(2) {
+      width: 30%;
+    }
+
+    .ranking-panel th:nth-child(3),
+    .ranking-panel td:nth-child(3) {
+      width: 126px;
+    }
+
+    .ranking-panel th:nth-child(4),
+    .ranking-panel td:nth-child(4) {
+      width: 112px;
+    }
+
+    .ranking-panel .ranking-memo-input {
+      min-height: 40px;
+      height: 40px;
+      padding: 5px 8px;
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .ranking-panel .member-name strong {
+      font-size: 20px;
+    }
+
+    .ranking-panel .member-name span {
+      font-size: 14px;
+    }
+
+    .ranking-panel .chip {
       font-size: 15px;
     }
 
@@ -3097,6 +3171,76 @@
       box-shadow: 0 16px 34px rgba(47, 91, 255, 0.2);
       outline: 0;
     }
+
+    .side .role-item {
+      grid-template-columns: 38px minmax(0, 1fr) auto;
+      gap: 10px;
+      padding: 12px;
+    }
+
+    .side .role-item .position {
+      width: 34px;
+      height: 34px;
+      font-size: 17px;
+    }
+
+    .side .role-item strong {
+      font-size: 24px;
+      line-height: 1.1;
+    }
+
+    .side .role-item .chip {
+      min-height: 34px;
+      padding: 6px 9px;
+      font-size: 21px;
+      line-height: 1;
+    }
+
+    .left-column .panel-header h2 {
+      font-size: 21px;
+    }
+
+    .left-column .field > span {
+      font-size: 17px;
+    }
+
+    .left-column .race-name,
+    .left-column .race-count {
+      font-size: 16px;
+    }
+
+    .left-column input,
+    .left-column .segmented button {
+      font-size: 17px;
+    }
+
+    .left-column .winners-status,
+    .left-column .hint {
+      font-size: 15px;
+    }
+
+    .left-column .btn {
+      font-size: 16px;
+    }
+
+    .leader-memo {
+      width: min(720px, 100%);
+      margin: 12px 0 0;
+      padding: 9px 12px;
+      border-left: 4px solid var(--protoss);
+      border-radius: 4px;
+      color: #765100;
+      background: #fff9df;
+      font-size: 19px;
+      line-height: 1.4;
+      font-weight: 900;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .leader-memo:empty {
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -3104,7 +3248,7 @@
     <header class="topbar">
       <div class="brand">
         <h1>피엘보드</h1>
-        <input id="boardTitle" type="text" aria-label="보드 제목" placeholder="메모를 입력하세요.">
+        <p class="leader-memo" id="leaderMemo" aria-live="polite"></p>
       </div>
       <div class="scoreboard" aria-label="요약 현황">
         <div class="stat">
@@ -3178,9 +3322,9 @@
               <tr>
                 <th>순위</th>
                 <th>멤버</th>
-                <th>종족</th>
                 <th>펀딩</th>
                 <th>역할</th>
+                <th>메모</th>
               </tr>
             </thead>
             <tbody id="rankingBody"></tbody>
@@ -3189,7 +3333,7 @@
         <p class="hint ranking-hint">펀딩 개수가 동일하면 드래그해서 순위를 바꿀 수 있습니다.</p>
       </section>
 
-      <section class="panel">
+      <section class="panel team-selection-panel">
         <div class="panel-header">
           <h2>팀 선택 구성</h2>
           <div class="actions">
@@ -3313,7 +3457,7 @@
     let eventsBound = false;
 
     const els = {
-      boardTitle: document.getElementById("boardTitle"),
+      leaderMemo: document.getElementById("leaderMemo"),
       totalFunding: document.getElementById("totalFunding"),
       matchLabel: document.getElementById("matchLabel"),
       memberCount: document.getElementById("memberCount"),
@@ -3379,6 +3523,7 @@
         name: String(player.name || "").trim(),
         race: races[player.race] ? player.race : "U",
         team: player.team === "1" || player.team === "2" ? player.team : "",
+        memo: String(player.memo || ""),
         funding: normalizeNumber(player.funding),
         fundingOrder: normalizeOrder(player.fundingOrder),
         teamOrder: normalizeOrder(player.teamOrder),
@@ -3434,7 +3579,7 @@
     }
 
     function fundingRankedPlayers() {
-      return sortedPlayers().filter((player) => player.team === "1" || player.team === "2");
+      return sortedPlayers();
     }
 
     function rankedPlayers() {
@@ -3449,9 +3594,9 @@
     }
 
     const roleLabels = {
-      spectator: "관전자 가능",
-      player: "선수",
-      room: "방 생성"
+      spectator: "관전자",
+      player: "",
+      room: "룸싸개"
     };
 
     function buildRoleMap(sorted) {
@@ -3474,11 +3619,6 @@
       if (eventsBound) return;
       eventsBound = true;
 
-      els.boardTitle.addEventListener("input", () => {
-        state.title = els.boardTitle.value;
-        saveAndRender();
-      });
-
       els.matchButtons.forEach((button) => {
         button.addEventListener("click", () => {
           state.matchSize = Number(button.dataset.matchSize);
@@ -3496,7 +3636,6 @@
         state.players = [];
         state.title = "";
         state.winnersTarget = 0;
-        els.boardTitle.value = "";
         toast("보드를 초기화했습니다.");
         saveAndRender();
       });
@@ -3751,7 +3890,7 @@
       const teamOne = teamPlayers("1");
       const teamTwo = teamPlayers("2");
 
-      els.boardTitle.value = state.title;
+      els.leaderMemo.textContent = sorted[0]?.memo || "";
       els.team1Name.textContent = `${teamLabel("1")} 선택`;
       els.team2Name.textContent = `${teamLabel("2")} 선택`;
       els.totalFunding.textContent = formatCount(totalFunding);
@@ -3977,11 +4116,23 @@
         event.preventDefault();
         return;
       }
+      const card = event.target.closest(".pool-card, .slot.player-slot");
+      if (!card || card !== event.currentTarget) {
+        event.preventDefault();
+        return;
+      }
+      window.getSelection()?.removeAllRanges();
       draggedTeamPlayerId = event.currentTarget.dataset.id;
       event.currentTarget.classList.add("dragging");
       if (event.dataTransfer) {
         event.dataTransfer.effectAllowed = "move";
         event.dataTransfer.setData("text/plain", draggedTeamPlayerId);
+        const ghost = event.currentTarget.cloneNode(true);
+        ghost.classList.add("team-drag-ghost");
+        ghost.querySelectorAll("button").forEach((button) => button.remove());
+        document.body.appendChild(ghost);
+        event.dataTransfer.setDragImage(ghost, 24, 20);
+        requestAnimationFrame(() => ghost.remove());
       }
     }
 
@@ -4032,7 +4183,7 @@
         els.rankingBody.innerHTML = `
           <tr>
             <td colspan="5">
-              <div class="empty-state">팀 선택 구성에 선수를 넣으면 펀딩 높은 순으로 표시됩니다.</div>
+              <div class="empty-state">모집 명단에 선수를 입력하면 펀딩 높은 순으로 표시됩니다.</div>
             </td>
           </tr>
         `;
@@ -4044,6 +4195,9 @@
         const rank = index + 1;
         const race = races[player.race] || races.U;
         const roleInfo = roleMap[player.id] || { role: "player", label: roleLabels.player };
+        const roleChip = roleInfo.label
+          ? `<span class="chip ${roleInfo.role === "spectator" ? "blue" : roleInfo.role === "room" ? "red" : ""}">${roleInfo.label}</span>`
+          : "";
 
         const row = document.createElement("tr");
         row.className = `rank-row${rank === 1 ? " rank-one" : ""}`;
@@ -4058,18 +4212,17 @@
               <span class="avatar ${race.className}">${race.short}</span>
               <span class="member-name">
                 <strong>${escapeHtml(player.name)}</strong>
-                <span>${formatCount(player.funding)}</span>
               </span>
             </div>
-          </td>
-          <td>
-            <span class="chip ${race.className}">${race.label}</span>
           </td>
           <td>
             <input class="inline-input" type="number" min="0" step="50" value="${player.funding}" data-action="funding" data-id="${player.id}" aria-label="${escapeHtml(player.name)} 펀딩">
           </td>
           <td>
-            <span class="chip ${roleInfo.role === "spectator" ? "blue" : roleInfo.role === "room" ? "red" : ""}">${roleInfo.label}</span>
+            ${roleChip}
+          </td>
+          <td>
+            <input class="ranking-memo-input" type="text" maxlength="24" value="${escapeHtml(player.memo)}" data-action="memo" data-id="${player.id}" aria-label="${escapeHtml(player.name)} 메모" placeholder="메모">
           </td>
         `;
         row.addEventListener("dragstart", handleRankDragStart);
@@ -4085,8 +4238,20 @@
         if (action === "funding") {
           control.addEventListener("keydown", handleFundingKeydown);
           control.addEventListener("blur", handleFundingCommit);
+        } else if (action === "memo") {
+          control.addEventListener("input", handleRankingMemoInput);
         }
       });
+    }
+
+    function handleRankingMemoInput(event) {
+      const player = state.players.find((item) => item.id === event.currentTarget.dataset.id);
+      if (!player) return;
+      player.memo = event.currentTarget.value.slice(0, 24);
+      if (rankedPlayers()[0]?.id === player.id) {
+        els.leaderMemo.textContent = player.memo;
+      }
+      save();
     }
 
     function handleFundingKeydown(event) {
@@ -4208,7 +4373,6 @@
             <span class="position">${index + 1}</span>
             <span>
               <strong>${escapeHtml(player.name)}</strong>
-              <span>${playerMeta(player)}</span>
             </span>
             <span class="chip blue">${formatCount(player.funding)}</span>
           </div>
@@ -4264,14 +4428,6 @@
         return leader ? `${leader.name}팀` : `${team}팀`;
       }
       return "";
-    }
-
-    function playerMeta(player, includeFunding = false) {
-      const parts = [raceLabel(player.race)];
-      const teamName = teamLabel(player.team);
-      if (teamName) parts.push(teamName);
-      if (includeFunding) parts.push(formatCount(player.funding));
-      return parts.join(" · ");
     }
 
     async function copySpectatorOrder() {
