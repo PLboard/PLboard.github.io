@@ -3227,23 +3227,307 @@
       font-size: 16px;
     }
 
-    .leader-memo {
-      width: min(720px, 100%);
+    .matchup-summary {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 7px 10px;
+      width: min(900px, 100%);
       margin: 12px 0 0;
-      padding: 9px 12px;
-      border-left: 4px solid var(--protoss);
-      border-radius: 4px;
-      color: #765100;
-      background: #fff9df;
-      font-size: 19px;
-      line-height: 1.4;
+      padding: 3px 0;
+      color: var(--ink);
+      background: transparent;
+      font-size: 27px;
+      line-height: 1.25;
       font-weight: 900;
-      white-space: pre-wrap;
-      overflow-wrap: anywhere;
     }
 
-    .leader-memo:empty {
+    .matchup-team {
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 7px 10px;
+      align-items: center;
+    }
+
+    .matchup-player {
+      font-size: 27px;
+      font-weight: 950;
+      white-space: nowrap;
+    }
+
+    .matchup-player.terran {
+      color: var(--terran);
+    }
+
+    .matchup-player.zerg {
+      color: var(--zerg);
+    }
+
+    .matchup-player.protoss {
+      color: var(--protoss);
+    }
+
+    .matchup-vs {
+      color: #101320;
+      font-size: 22px;
+      font-weight: 950;
+      white-space: nowrap;
+    }
+
+    .matchup-summary:empty {
       display: none;
+    }
+
+    .brand-heading {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px 16px;
+    }
+
+    .focus-mode-btn {
+      min-height: 42px;
+      padding: 8px 14px;
+      border: 1px solid #cfd8ea;
+      border-radius: 6px;
+      color: var(--accent);
+      background: #f4f7ff;
+      font-size: 15px;
+      font-weight: 950;
+      box-shadow: 0 6px 16px rgba(36, 88, 211, 0.1);
+      transition: color 140ms ease, background 140ms ease, border-color 140ms ease, transform 140ms ease;
+    }
+
+    .focus-mode-btn:hover,
+    .focus-mode-btn:focus-visible {
+      border-color: var(--accent);
+      transform: translateY(-1px);
+      outline: 0;
+    }
+
+    .focus-mode-btn[aria-pressed="true"] {
+      color: #ffffff;
+      background: #101320;
+      border-color: #101320;
+      box-shadow: 0 8px 18px rgba(16, 19, 32, 0.2);
+    }
+
+    .panel-toggle-btn {
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      min-height: 34px;
+      padding: 0;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      color: #59677d;
+      background: #ffffff;
+      font-size: 19px;
+      font-weight: 950;
+      line-height: 1;
+    }
+
+    .panel-toggle-btn:hover,
+    .panel-toggle-btn:focus-visible {
+      color: var(--accent);
+      border-color: var(--accent);
+      background: #f4f7ff;
+      outline: 0;
+    }
+
+    .collapsible-panel.is-collapsed .collapsible-content {
+      display: none;
+    }
+
+    .collapsible-panel.is-collapsed .panel-header {
+      border-bottom: 0;
+    }
+
+    .middle {
+      align-content: start;
+    }
+
+    .team-selection-panel.is-collapsed {
+      align-self: start;
+      height: max-content;
+    }
+
+    .team-selection-panel.is-collapsed #autoTeamBtn {
+      display: none;
+    }
+
+    body {
+      font-size: 18px;
+    }
+
+    .panel-header h2,
+    .left-column .panel-header h2 {
+      font-size: 22px;
+    }
+
+    .ranking-panel .panel-header h2 {
+      font-size: 23px;
+    }
+
+    .focus-mode-btn,
+    .ranking-panel .panel-header .btn {
+      font-size: 17px;
+    }
+
+    .ranking-panel .panel-header .btn {
+      min-height: 38px;
+    }
+
+    .field > span,
+    .team-pool-head .label,
+    .side .label,
+    .race-name,
+    .race-count,
+    th {
+      font-size: 17px;
+    }
+
+    input,
+    select,
+    textarea,
+    .btn,
+    .segmented button,
+    .race-entry input,
+    .race-entry select,
+    .race-entry button,
+    .left-column input,
+    .left-column .segmented button,
+    .left-column .btn {
+      font-size: 18px;
+    }
+
+    .btn,
+    .segmented button,
+    .race-entry input,
+    .race-entry select,
+    .race-entry button {
+      min-height: 44px;
+    }
+
+    .hint,
+    .winners-status,
+    .left-column .winners-status,
+    .left-column .hint,
+    .ranking-panel .ranking-hint {
+      font-size: 16px;
+    }
+
+    .stat strong {
+      font-size: 30px;
+    }
+
+    .team-name,
+    .slot .name,
+    .pool-race-list .pool-card .pool-name strong {
+      font-size: 20px;
+    }
+
+    .team-meta,
+    .pool-race-empty,
+    .confirmed-team-label,
+    .confirmed-member,
+    .confirmed-member-empty {
+      font-size: 16px;
+    }
+
+    .ranking-panel th {
+      font-size: 17px;
+    }
+
+    .ranking-panel .ranking-memo-input {
+      font-size: 18px;
+    }
+
+    .ranking-panel .chip {
+      font-size: 17px;
+    }
+
+    .reference-link {
+      min-height: 50px;
+      font-size: 18px;
+    }
+
+    .reference-link small {
+      font-size: 15px;
+    }
+
+    .feedback-banner span:first-child {
+      font-size: 15px;
+    }
+
+    .feedback-banner strong {
+      font-size: 22px;
+    }
+
+    .pool-race-row {
+      grid-template-columns: 40px minmax(0, 1fr);
+      min-height: 60px;
+      gap: 10px;
+    }
+
+    .pool-race-code {
+      width: 38px;
+      height: 38px;
+      font-size: 18px;
+    }
+
+    .pool-race-list {
+      gap: 9px;
+      padding: 4px 0;
+    }
+
+    .pool-race-list .pool-card {
+      flex: 0 0 142px;
+      grid-template-columns: minmax(0, 1fr) 30px;
+      gap: 6px;
+      width: 142px;
+      min-height: 54px;
+      padding: 7px 8px;
+    }
+
+    .pool-race-list .pool-card .icon-btn {
+      width: 30px;
+      height: 30px;
+      min-height: 30px;
+      font-size: 18px;
+    }
+
+    .slots {
+      gap: 8px;
+      min-height: 70px;
+      padding: 8px;
+    }
+
+    .slot {
+      flex-basis: 128px;
+      height: 54px;
+      min-height: 54px;
+      padding: 8px;
+    }
+
+    .slot.player-slot {
+      grid-template-columns: 28px minmax(0, 4em);
+      gap: 7px;
+    }
+
+    .slot.player-slot .avatar {
+      width: 28px;
+      height: 28px;
+      font-size: 12px;
+    }
+
+    .slot-placeholder .name {
+      font-size: 16px;
+    }
+
+    .team-drag-ghost {
+      width: 142px !important;
     }
   </style>
 </head>
@@ -3251,8 +3535,11 @@
   <main class="app">
     <header class="topbar">
       <div class="brand">
-        <h1>피엘보드</h1>
-        <p class="leader-memo" id="leaderMemo" aria-live="polite"></p>
+        <div class="brand-heading">
+          <h1>피엘보드</h1>
+          <button class="focus-mode-btn" id="fundingFocusBtn" type="button" aria-pressed="false">펀딩 집중모드</button>
+        </div>
+        <p class="matchup-summary" id="matchupSummary" aria-live="polite"></p>
       </div>
       <div class="scoreboard" aria-label="요약 현황">
         <div class="stat">
@@ -3275,11 +3562,12 @@
     </header>
 
     <aside class="left-column">
-      <section class="panel">
+      <section class="panel collapsible-panel" id="settingsPanel">
         <div class="panel-header">
           <h2>설정 / 모집</h2>
+          <button class="panel-toggle-btn" id="settingsToggleBtn" type="button" aria-expanded="true" aria-controls="settingsPanelBody" title="설정 / 모집 접기">▴</button>
         </div>
-        <div class="panel-body stack">
+        <div class="panel-body stack collapsible-content" id="settingsPanelBody">
         <div class="field">
           <span>매치 방식</span>
           <div class="segmented" role="group" aria-label="매치 방식">
@@ -3297,7 +3585,6 @@
         <div class="field">
           <span>종족별 모집 명단</span>
           <div class="race-goals" id="raceGoals"></div>
-          <p class="hint">여기서 입력하면 팀은 대기로 들어갑니다. 팀 선택 구성에서 멤버 카드를 드래그해 1팀/2팀 슬롯에 놓으면 됩니다.</p>
         </div>
 
           <div class="actions">
@@ -3337,14 +3624,15 @@
         <p class="hint ranking-hint">펀딩 개수가 동일하면 드래그해서 순위를 바꿀 수 있습니다.</p>
       </section>
 
-      <section class="panel team-selection-panel">
+      <section class="panel team-selection-panel collapsible-panel" id="teamSelectionPanel">
         <div class="panel-header">
           <h2>팀 선택 구성</h2>
           <div class="actions">
             <button class="btn" id="autoTeamBtn" type="button">자동배분</button>
+            <button class="panel-toggle-btn" id="teamToggleBtn" type="button" aria-expanded="true" aria-controls="teamSelectionBody" title="팀 선택 구성 접기">▴</button>
           </div>
         </div>
-        <div class="panel-body stack">
+        <div class="panel-body stack collapsible-content" id="teamSelectionBody">
           <div class="team-layout">
             <div class="team-box team-one">
               <div class="team-top">
@@ -3456,12 +3744,20 @@
       title: "",
       matchSize: 5,
       winnersTarget: 0,
+      focusMode: false,
+      settingsCollapsed: false,
+      teamCollapsed: false,
       players: []
     };
     let eventsBound = false;
 
     const els = {
-      leaderMemo: document.getElementById("leaderMemo"),
+      fundingFocusBtn: document.getElementById("fundingFocusBtn"),
+      settingsPanel: document.getElementById("settingsPanel"),
+      settingsToggleBtn: document.getElementById("settingsToggleBtn"),
+      teamSelectionPanel: document.getElementById("teamSelectionPanel"),
+      teamToggleBtn: document.getElementById("teamToggleBtn"),
+      matchupSummary: document.getElementById("matchupSummary"),
       totalFunding: document.getElementById("totalFunding"),
       matchLabel: document.getElementById("matchLabel"),
       memberCount: document.getElementById("memberCount"),
@@ -3517,6 +3813,9 @@
         title: "",
         matchSize: 5,
         winnersTarget: 0,
+        focusMode: false,
+        settingsCollapsed: false,
+        teamCollapsed: false,
         players: []
       };
     }
@@ -3619,6 +3918,14 @@
       return map;
     }
 
+    function syncFocusModeFromPanels() {
+      if (state.settingsCollapsed && state.teamCollapsed) {
+        state.focusMode = true;
+      } else if (!state.settingsCollapsed && !state.teamCollapsed) {
+        state.focusMode = false;
+      }
+    }
+
     function bindEvents() {
       if (eventsBound) return;
       eventsBound = true;
@@ -3635,11 +3942,34 @@
         saveAndRender({ action: "winners-target" });
       });
 
+      els.fundingFocusBtn.addEventListener("click", () => {
+        state.focusMode = !state.focusMode;
+        state.settingsCollapsed = state.focusMode;
+        state.teamCollapsed = state.focusMode;
+        toast(state.focusMode ? "펀딩 집중모드를 켰습니다." : "설정 화면을 열었습니다.");
+        saveAndRender();
+      });
+
+      els.settingsToggleBtn.addEventListener("click", () => {
+        state.settingsCollapsed = !state.settingsCollapsed;
+        syncFocusModeFromPanels();
+        saveAndRender();
+      });
+
+      els.teamToggleBtn.addEventListener("click", () => {
+        state.teamCollapsed = !state.teamCollapsed;
+        syncFocusModeFromPanels();
+        saveAndRender();
+      });
+
       els.resetBtn.addEventListener("click", () => {
         if (!window.confirm("보드를 전부 초기화할까요?")) return;
         state.players = [];
         state.title = "";
         state.winnersTarget = 0;
+        state.focusMode = false;
+        state.settingsCollapsed = false;
+        state.teamCollapsed = false;
         toast("보드를 초기화했습니다.");
         saveAndRender();
       });
@@ -3814,11 +4144,17 @@
         const isLegacyState = saved.version !== 3;
         const savedTitle = typeof saved.title === "string" ? saved.title : state.title;
         const savedWinnersTarget = normalizeNumber(saved.winnersTarget);
+        const savedFocusMode = saved.focusMode === true;
+        const savedSettingsCollapsed = typeof saved.settingsCollapsed === "boolean" ? saved.settingsCollapsed : savedFocusMode;
+        const savedTeamCollapsed = typeof saved.teamCollapsed === "boolean" ? saved.teamCollapsed : savedFocusMode;
         state = {
           version: 3,
           title: isLegacyState && savedTitle === "13000개 위너스 갑니다 ㅎㅎ" ? "" : savedTitle,
           matchSize: saved.matchSize === 4 || saved.matchSize === 5 ? saved.matchSize : state.matchSize,
           winnersTarget: isLegacyState && savedWinnersTarget === 13000 ? 0 : savedWinnersTarget,
+          focusMode: typeof saved.focusMode === "boolean" ? saved.focusMode : savedSettingsCollapsed && savedTeamCollapsed,
+          settingsCollapsed: savedSettingsCollapsed,
+          teamCollapsed: savedTeamCollapsed,
           players: Array.isArray(saved.players) ? saved.players.map(makePlayer).filter((player) => player.name) : state.players
         };
         repairTeamOrders();
@@ -3894,7 +4230,24 @@
       const teamOne = teamPlayers("1");
       const teamTwo = teamPlayers("2");
 
-      els.leaderMemo.textContent = sorted[0]?.memo || "";
+      els.settingsPanel.classList.toggle("is-collapsed", state.settingsCollapsed);
+      els.teamSelectionPanel.classList.toggle("is-collapsed", state.teamCollapsed);
+      els.settingsToggleBtn.setAttribute("aria-expanded", String(!state.settingsCollapsed));
+      els.settingsToggleBtn.textContent = state.settingsCollapsed ? "▾" : "▴";
+      els.settingsToggleBtn.title = state.settingsCollapsed ? "설정 / 모집 펼치기" : "설정 / 모집 접기";
+      els.teamToggleBtn.setAttribute("aria-expanded", String(!state.teamCollapsed));
+      els.teamToggleBtn.textContent = state.teamCollapsed ? "▾" : "▴";
+      els.teamToggleBtn.title = state.teamCollapsed ? "팀 선택 구성 펼치기" : "팀 선택 구성 접기";
+      els.fundingFocusBtn.setAttribute("aria-pressed", String(state.focusMode));
+      els.fundingFocusBtn.textContent = state.focusMode ? "전체모드" : "펀딩 집중모드";
+      const teamsAreComplete = teamOne.length === state.matchSize && teamTwo.length === state.matchSize;
+      els.matchupSummary.innerHTML = teamsAreComplete
+        ? `
+          <span class="matchup-team">${teamOne.map((player) => `<span class="matchup-player ${races[player.race]?.className || "unknown"}">${escapeHtml(player.name)}</span>`).join("")}</span>
+          <span class="matchup-vs">vs</span>
+          <span class="matchup-team">${teamTwo.map((player) => `<span class="matchup-player ${races[player.race]?.className || "unknown"}">${escapeHtml(player.name)}</span>`).join("")}</span>
+        `
+        : "";
       els.team1Name.textContent = `${teamLabel("1")} 선택`;
       els.team2Name.textContent = `${teamLabel("2")} 선택`;
       els.totalFunding.textContent = formatCount(totalFunding);
@@ -4252,9 +4605,6 @@
       const player = state.players.find((item) => item.id === event.currentTarget.dataset.id);
       if (!player) return;
       player.memo = event.currentTarget.value.slice(0, 24);
-      if (rankedPlayers()[0]?.id === player.id) {
-        els.leaderMemo.textContent = player.memo;
-      }
       save();
     }
 
