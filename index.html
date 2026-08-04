@@ -1781,9 +1781,22 @@
     }
 
     .winners-status.is-open {
-      color: #008c70;
+      color: #5c687a;
       background: #f2fffb;
       border-color: rgba(0, 169, 129, 0.32);
+    }
+
+    .winners-status .status-count {
+      font-size: 13px;
+      font-weight: 950;
+    }
+
+    .winners-status .status-count.is-short {
+      color: var(--bad);
+    }
+
+    .winners-status .status-count.is-reached {
+      color: var(--good);
     }
 
     .team-box {
@@ -2585,7 +2598,7 @@
         </div>
         <div class="stat" id="winnersStat">
           <span>위너스</span>
-          <strong id="winnersSummary">대기</strong>
+          <strong id="winnersSummary">닫힘</strong>
         </div>
       </div>
     </header>
@@ -3251,15 +3264,15 @@
       const gap = Math.max(target - totalFunding, 0);
 
       els.winnersTarget.value = target || "";
-      els.winnersSummary.textContent = isOpen ? "열림" : "대기";
+      els.winnersSummary.textContent = isOpen ? "열림" : "닫힘";
       els.winnersStat.classList.toggle("is-open", isOpen);
       els.winnersStatus.classList.toggle("is-open", isOpen);
       if (!target) {
         els.winnersStatus.textContent = "위너스리그 목표 개수를 입력해 주세요.";
       } else if (isOpen) {
-        els.winnersStatus.textContent = `총 펀딩 ${formatCount(totalFunding)} 달성, 위너스가 열렸습니다.`;
+        els.winnersStatus.innerHTML = `총 펀딩 <strong class="status-count is-reached">${formatCount(totalFunding)}</strong> 달성, 위너스가 열렸습니다.`;
       } else {
-        els.winnersStatus.textContent = `목표 ${formatCount(target)}까지 ${formatCount(gap)} 남았습니다.`;
+        els.winnersStatus.innerHTML = `목표 ${formatCount(target)}까지 <strong class="status-count is-short">${formatCount(gap)}</strong> 남았습니다.`;
       }
     }
 
