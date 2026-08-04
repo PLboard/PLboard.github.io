@@ -2143,6 +2143,12 @@
       background: #f3f6ff;
     }
 
+    .team-pool.drop-ready {
+      outline: 2px solid rgba(47, 91, 255, 0.38);
+      outline-offset: -2px;
+      background: #f3f6ff;
+    }
+
     .slot-placeholder {
       grid-template-columns: 26px minmax(0, 1fr);
       color: #9aa3b5;
@@ -2758,13 +2764,98 @@
     }
 
     .pool-race-list .pool-card {
-      flex-basis: 128px;
-      width: 128px;
-      min-height: 44px;
+      flex-basis: 120px;
+      grid-template-columns: minmax(0, 1fr) 22px;
+      gap: 4px;
+      width: 120px;
+      min-height: 42px;
+      padding: 4px;
     }
 
     .pool-race-list .pool-card .pool-name strong {
       font-size: 19px;
+    }
+
+    .pool-race-list .pool-card .icon-btn {
+      width: 22px;
+      height: 22px;
+      min-height: 22px;
+    }
+
+    .confirmed-team-board {
+      display: grid;
+      gap: 8px;
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--line);
+      background: #fbfcfe;
+    }
+
+    .confirmed-team-title {
+      color: var(--muted);
+      font-size: 15px;
+      font-weight: 950;
+    }
+
+    .confirmed-team-rows {
+      display: grid;
+    }
+
+    .confirmed-team-row {
+      display: grid;
+      grid-template-columns: 104px minmax(0, 1fr);
+      align-items: center;
+      gap: 12px;
+      min-height: 38px;
+    }
+
+    .confirmed-team-row + .confirmed-team-row {
+      border-top: 1px solid #e8edf4;
+    }
+
+    .confirmed-team-label {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 16px;
+      font-weight: 950;
+    }
+
+    .confirmed-team-row.team-one .confirmed-team-label {
+      color: var(--team1);
+    }
+
+    .confirmed-team-row.team-two .confirmed-team-label {
+      color: var(--team2);
+    }
+
+    .confirmed-member-list {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+      overflow-x: auto;
+      color: #2f3746;
+      font-size: 16px;
+      font-weight: 900;
+      scrollbar-width: thin;
+    }
+
+    .confirmed-member {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      flex: 0 0 auto;
+      white-space: nowrap;
+    }
+
+    .confirmed-member:not(:last-child)::after {
+      content: "·";
+      color: #a5aebe;
+    }
+
+    .confirmed-member-empty {
+      color: #a5aebe;
+      font-weight: 800;
     }
 
     .team-box .team-top {
@@ -2777,23 +2868,25 @@
     }
 
     .slots {
-      min-height: 54px;
-      padding: 7px;
+      gap: 4px;
+      min-height: 52px;
+      padding: 6px;
     }
 
     .slot {
-      flex-basis: 132px;
+      flex-basis: 120px;
       height: 40px;
       min-height: 40px;
-      padding: 5px;
+      padding: 4px;
     }
 
     .slot.player-slot {
-      grid-template-columns: 24px minmax(0, 4em) 24px;
+      grid-template-columns: 22px minmax(0, 4em);
+      gap: 4px;
     }
 
     .slot .name {
-      font-size: 16px;
+      font-size: 19px;
     }
 
     .slot-placeholder .name {
@@ -2925,6 +3018,10 @@
 
     <section class="middle">
       <section class="panel">
+        <div class="confirmed-team-board">
+          <div class="confirmed-team-title">확정 팀 멤버</div>
+          <div class="confirmed-team-rows" id="confirmedTeamBoard"></div>
+        </div>
         <div class="panel-header">
           <h2>펀딩 순위</h2>
           <div class="actions">
@@ -2956,16 +3053,6 @@
           </div>
         </div>
         <div class="panel-body stack">
-          <div class="balance-strip">
-            <div class="mini-stat">
-              <span id="team1TotalLabel">1팀 총합</span>
-              <strong id="team1Total">0개</strong>
-            </div>
-            <div class="mini-stat">
-              <span id="team2TotalLabel">2팀 총합</span>
-              <strong id="team2Total">0개</strong>
-            </div>
-          </div>
           <div class="team-layout">
             <div class="team-box team-one">
               <div class="team-top">
@@ -2982,7 +3069,7 @@
               <div class="slots" id="team2Slots"></div>
             </div>
           </div>
-          <div class="team-pool">
+          <div class="team-pool" id="teamPool">
             <div class="team-pool-head">
               <span class="label">팀 멤버 선택</span>
               <span class="team-meta" id="teamPoolMeta">드래그해서 배정</span>
@@ -3091,17 +3178,15 @@
       autoTeamBtn: document.getElementById("autoTeamBtn"),
       team1Name: document.getElementById("team1Name"),
       team2Name: document.getElementById("team2Name"),
-      team1TotalLabel: document.getElementById("team1TotalLabel"),
-      team2TotalLabel: document.getElementById("team2TotalLabel"),
-      team1Total: document.getElementById("team1Total"),
-      team2Total: document.getElementById("team2Total"),
       team1Meta: document.getElementById("team1Meta"),
       team2Meta: document.getElementById("team2Meta"),
       team1Slots: document.getElementById("team1Slots"),
       team2Slots: document.getElementById("team2Slots"),
+      teamPool: document.getElementById("teamPool"),
       teamPoolMeta: document.getElementById("teamPoolMeta"),
       teamPoolFilters: document.getElementById("teamPoolFilters"),
       teamMemberPool: document.getElementById("teamMemberPool"),
+      confirmedTeamBoard: document.getElementById("confirmedTeamBoard"),
       rankingBody: document.getElementById("rankingBody"),
       resetRoleOrderBtn: document.getElementById("resetRoleOrderBtn"),
       spectatorList: document.getElementById("spectatorList"),
@@ -3270,6 +3355,7 @@
       els.autoTeamBtn.addEventListener("click", autoAssignTeams);
       bindTeamDropZone(els.team1Slots, "1");
       bindTeamDropZone(els.team2Slots, "2");
+      bindTeamWaitingDropZone(els.teamPool);
       els.teamPoolFilters.addEventListener("click", (event) => {
         const button = event.target.closest("[data-pool-filter]");
         if (!button) return;
@@ -3515,24 +3601,18 @@
       const totalFunding = sorted.reduce((sum, player) => sum + player.funding, 0);
       const teamOne = teamPlayers("1");
       const teamTwo = teamPlayers("2");
-      const teamOneTotal = teamOne.reduce((sum, player) => sum + player.funding, 0);
-      const teamTwoTotal = teamTwo.reduce((sum, player) => sum + player.funding, 0);
 
       els.boardTitle.value = state.title;
-      els.team1Name.textContent = teamLabel("1");
-      els.team2Name.textContent = teamLabel("2");
+      els.team1Name.textContent = `${teamLabel("1")} 선택`;
+      els.team2Name.textContent = `${teamLabel("2")} 선택`;
       els.totalFunding.textContent = formatCount(totalFunding);
       els.matchLabel.textContent = `${state.matchSize}대${state.matchSize}`;
-      els.memberCount.textContent = `${sorted.length}명`;
+      els.memberCount.textContent = `${state.players.length}명`;
       renderWinnersStatus(totalFunding);
       els.matchButtons.forEach((button) => {
         button.classList.toggle("is-active", Number(button.dataset.matchSize) === state.matchSize);
       });
 
-      els.team1Total.textContent = formatCount(teamOneTotal);
-      els.team2Total.textContent = formatCount(teamTwoTotal);
-      els.team1TotalLabel.textContent = `${teamLabel("1")} 총합`;
-      els.team2TotalLabel.textContent = `${teamLabel("2")} 총합`;
       els.team1Meta.textContent = `${teamOne.length} / ${state.matchSize}`;
       els.team2Meta.textContent = `${teamTwo.length} / ${state.matchSize}`;
       els.team1Meta.style.color = teamOne.length > state.matchSize ? "var(--bad)" : "";
@@ -3542,6 +3622,7 @@
       renderTeamMemberPool();
       renderTeamSlots("1", teamOne, els.team1Slots);
       renderTeamSlots("2", teamTwo, els.team2Slots);
+      renderConfirmedTeams(teamOne, teamTwo);
       renderRanking(sorted, roleMap);
       renderRoles(sorted, roleMap);
       els.exportText.value = buildSpectatorOrderText(sorted, roleMap);
@@ -3697,11 +3778,9 @@
           slot.innerHTML = `
             <span class="avatar ${race.className}">${race.short}</span>
             <span class="name">${escapeHtml(player.name)}</span>
-            <button class="icon-btn" type="button" data-action="unassign" data-id="${player.id}" aria-label="${escapeHtml(player.name)} 팀에서 빼기">x</button>
           `;
           slot.addEventListener("dragstart", handleTeamDragStart);
           slot.addEventListener("dragend", handleTeamDragEnd);
-          slot.querySelector('[data-action="unassign"]').addEventListener("click", handleUnassignClick);
           container.appendChild(slot);
         } else {
           const slot = document.createElement("div");
@@ -3715,11 +3794,33 @@
       }
     }
 
+    function renderConfirmedTeams(teamOne, teamTwo) {
+      els.confirmedTeamBoard.innerHTML = [
+        { team: "1", players: teamOne },
+        { team: "2", players: teamTwo }
+      ].map(({ team, players }) => `
+        <div class="confirmed-team-row team-${team === "1" ? "one" : "two"}">
+          <strong class="confirmed-team-label">${escapeHtml(teamLabel(team))}</strong>
+          <div class="confirmed-member-list">
+            ${players.length
+              ? players.map((player) => `<span class="confirmed-member">${escapeHtml(player.name)}</span>`).join("")
+              : `<span class="confirmed-member-empty">비어 있음</span>`}
+          </div>
+        </div>
+      `).join("");
+    }
+
     function bindTeamDropZone(container, team) {
       container.dataset.dropTeam = team;
       container.addEventListener("dragover", handleTeamDragOver);
       container.addEventListener("dragleave", handleTeamDragLeave);
       container.addEventListener("drop", handleTeamDrop);
+    }
+
+    function bindTeamWaitingDropZone(container) {
+      container.addEventListener("dragover", handleTeamWaitingDragOver);
+      container.addEventListener("dragleave", handleTeamDragLeave);
+      container.addEventListener("drop", handleTeamWaitingDrop);
     }
 
     function handleTeamDragStart(event) {
@@ -3755,9 +3856,24 @@
       assignPlayerToTeam(draggedTeamPlayerId, team);
     }
 
+    function handleTeamWaitingDragOver(event) {
+      const player = state.players.find((item) => item.id === draggedTeamPlayerId);
+      if (!player?.team) return;
+      event.preventDefault();
+      event.currentTarget.classList.add("drop-ready");
+      if (event.dataTransfer) event.dataTransfer.dropEffect = "move";
+    }
+
+    function handleTeamWaitingDrop(event) {
+      event.preventDefault();
+      event.currentTarget.classList.remove("drop-ready");
+      if (!draggedTeamPlayerId) return;
+      returnPlayerToWaiting(draggedTeamPlayerId);
+    }
+
     function handleTeamDragEnd() {
       draggedTeamPlayerId = "";
-      document.querySelectorAll(".pool-card, .slot.player-slot, .slots").forEach((element) => {
+      document.querySelectorAll(".pool-card, .slot.player-slot, .slots, .team-pool").forEach((element) => {
         element.classList.remove("dragging", "drop-ready");
       });
     }
@@ -3913,8 +4029,8 @@
       });
     }
 
-    function handleUnassignClick(event) {
-      const player = state.players.find((item) => item.id === event.currentTarget.dataset.id);
+    function returnPlayerToWaiting(playerId) {
+      const player = state.players.find((item) => item.id === playerId);
       if (!player) return;
       player.team = "";
       player.teamOrder = 0;
