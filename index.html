@@ -3536,6 +3536,31 @@
       width: 142px !important;
     }
 
+    .race-entry .recruit-add-btn {
+      position: relative;
+      width: 50px;
+      min-width: 50px;
+      padding: 0;
+      font-size: 0;
+    }
+
+    .recruit-add-btn::before,
+    .recruit-add-btn::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 20px;
+      height: 3px;
+      border-radius: 2px;
+      background: currentColor;
+      transform: translate(-50%, -50%);
+    }
+
+    .recruit-add-btn::after {
+      transform: translate(-50%, -50%) rotate(90deg);
+    }
+
     @media (max-width: 820px) {
       .slots {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -3688,10 +3713,6 @@
             <div class="label">방 생성자</div>
             <div id="roomMaker"></div>
           </div>
-          <div class="confirmed-team-section">
-            <div class="label">확정 팀 멤버</div>
-            <div class="confirmed-team-rows" id="confirmedTeamBoard"></div>
-          </div>
         </div>
       </section>
 
@@ -3791,7 +3812,6 @@
       teamPoolMeta: document.getElementById("teamPoolMeta"),
       teamPoolFilters: document.getElementById("teamPoolFilters"),
       teamMemberPool: document.getElementById("teamMemberPool"),
-      confirmedTeamBoard: document.getElementById("confirmedTeamBoard"),
       rankingBody: document.getElementById("rankingBody"),
       resetRoleOrderBtn: document.getElementById("resetRoleOrderBtn"),
       spectatorList: document.getElementById("spectatorList"),
@@ -4279,7 +4299,6 @@
       renderTeamMemberPool();
       renderTeamSlots("1", teamOne, els.team1Slots);
       renderTeamSlots("2", teamTwo, els.team2Slots);
-      renderConfirmedTeams(teamOne, teamTwo);
       renderRanking(sorted, roleMap);
       renderRoles(sorted, roleMap);
       els.exportText.value = buildSpectatorOrderText(sorted, roleMap);
@@ -4322,7 +4341,7 @@
           </div>
           <form class="race-entry" data-race="${raceKey}">
             <input data-action="recruit-name" data-recruit-name data-race="${raceKey}" type="text" autocomplete="off" placeholder="${race.label} 이름">
-            <button class="btn primary" type="submit">추가</button>
+            <button class="btn primary recruit-add-btn" type="submit" aria-label="${race.label} 선수 추가"></button>
           </form>
           <div class="race-members">
             ${racePlayers.length ? racePlayers.map((player) => `
@@ -4449,22 +4468,6 @@
           container.appendChild(slot);
         }
       }
-    }
-
-    function renderConfirmedTeams(teamOne, teamTwo) {
-      els.confirmedTeamBoard.innerHTML = [
-        { team: "1", players: teamOne },
-        { team: "2", players: teamTwo }
-      ].map(({ team, players }) => `
-        <div class="confirmed-team-row team-${team === "1" ? "one" : "two"}">
-          <strong class="confirmed-team-label">${escapeHtml(teamLabel(team))}</strong>
-          <div class="confirmed-member-list">
-            ${players.length
-              ? players.map((player) => `<span class="confirmed-member">${escapeHtml(player.name)}</span>`).join("")
-              : `<span class="confirmed-member-empty">비어 있음</span>`}
-          </div>
-        </div>
-      `).join("");
     }
 
     function bindTeamDropZone(container, team) {
