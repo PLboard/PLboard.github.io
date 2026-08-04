@@ -408,6 +408,8 @@
 
     .ranking-hint {
       padding: 10px 16px 14px;
+      color: var(--bad);
+      font-weight: 900;
     }
 
     .winners-status {
@@ -1987,10 +1989,20 @@
     }
 
     .room-maker .room-funding {
-      margin-top: 5px;
+      margin-top: 0;
       color: var(--bad);
-      font-size: 14px;
+      font-size: 18px;
       font-weight: 950;
+    }
+
+    .room-maker {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+
+    .room-maker strong {
+      font-size: 24px;
     }
 
     .funding-donut {
@@ -2147,6 +2159,14 @@
       outline: 2px solid rgba(47, 91, 255, 0.38);
       outline-offset: -2px;
       background: #f3f6ff;
+    }
+
+    .team-drag-hint {
+      margin: 0;
+      color: var(--bad);
+      font-size: 14px;
+      font-weight: 900;
+      line-height: 1.4;
     }
 
     .slot-placeholder {
@@ -2782,18 +2802,11 @@
       min-height: 22px;
     }
 
-    .confirmed-team-board {
+    .confirmed-team-section {
       display: grid;
-      gap: 8px;
-      padding: 14px 18px;
-      border-bottom: 1px solid var(--line);
-      background: #fbfcfe;
-    }
-
-    .confirmed-team-title {
-      color: var(--muted);
-      font-size: 15px;
-      font-weight: 950;
+      gap: 9px;
+      padding-top: 16px;
+      border-top: 1px solid var(--line);
     }
 
     .confirmed-team-rows {
@@ -2802,9 +2815,9 @@
 
     .confirmed-team-row {
       display: grid;
-      grid-template-columns: 104px minmax(0, 1fr);
+      grid-template-columns: auto minmax(0, 1fr);
       align-items: center;
-      gap: 12px;
+      gap: 8px;
       min-height: 38px;
     }
 
@@ -2813,10 +2826,11 @@
     }
 
     .confirmed-team-label {
+      max-width: 80px;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 950;
     }
 
@@ -2830,20 +2844,26 @@
 
     .confirmed-member-list {
       display: flex;
+      flex-wrap: nowrap;
       align-items: center;
-      gap: 8px;
+      gap: 4px;
       min-width: 0;
       overflow-x: auto;
+      overflow-y: hidden;
       color: #2f3746;
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 900;
-      scrollbar-width: thin;
+      scrollbar-width: none;
+    }
+
+    .confirmed-member-list::-webkit-scrollbar {
+      display: none;
     }
 
     .confirmed-member {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 4px;
       flex: 0 0 auto;
       white-space: nowrap;
     }
@@ -2963,7 +2983,7 @@
     <header class="topbar">
       <div class="brand">
         <h1>피엘보드</h1>
-        <input id="boardTitle" type="text" aria-label="보드 제목" placeholder="오늘의 프로리그는 과연...">
+        <input id="boardTitle" type="text" aria-label="보드 제목" placeholder="메모를 입력하세요.">
       </div>
       <div class="scoreboard" aria-label="요약 현황">
         <div class="stat">
@@ -3018,10 +3038,6 @@
 
     <section class="middle">
       <section class="panel">
-        <div class="confirmed-team-board">
-          <div class="confirmed-team-title">확정 팀 멤버</div>
-          <div class="confirmed-team-rows" id="confirmedTeamBoard"></div>
-        </div>
         <div class="panel-header">
           <h2>펀딩 순위</h2>
           <div class="actions">
@@ -3042,7 +3058,7 @@
             <tbody id="rankingBody"></tbody>
           </table>
         </div>
-        <p class="hint ranking-hint">펀딩 개수가 동일하면 행을 드래그해서 위치를 바꿀 수 있습니다.</p>
+        <p class="hint ranking-hint">펀딩 개수가 동일하면 드래그해서 순위를 바꿀 수 있습니다.</p>
       </section>
 
       <section class="panel">
@@ -3069,6 +3085,7 @@
               <div class="slots" id="team2Slots"></div>
             </div>
           </div>
+          <p class="team-drag-hint">이름을 드래그해서 팀을 선택해주세요.</p>
           <div class="team-pool" id="teamPool">
             <div class="team-pool-head">
               <span class="label">팀 멤버 선택</span>
@@ -3094,6 +3111,10 @@
           <div>
             <div class="label">방 생성자</div>
             <div id="roomMaker"></div>
+          </div>
+          <div class="confirmed-team-section">
+            <div class="label">확정 팀 멤버</div>
+            <div class="confirmed-team-rows" id="confirmedTeamBoard"></div>
           </div>
         </div>
       </section>
