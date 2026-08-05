@@ -3599,6 +3599,20 @@
     </header>
 
     <aside class="left-column">
+      <section class="panel collapsible-panel winners-panel" id="winnersPanel">
+        <div class="panel-header">
+          <h2>위너스리그</h2>
+          <button class="panel-toggle-btn" id="winnersToggleBtn" type="button" aria-expanded="true" aria-controls="winnersPanelBody" title="위너스리그 접기">▴</button>
+        </div>
+        <div class="panel-body stack collapsible-content" id="winnersPanelBody">
+          <div class="field">
+            <span>목표 개수</span>
+            <input id="winnersTarget" data-action="winners-target" type="number" min="0" step="100" inputmode="numeric" aria-label="위너스리그 목표 개수" placeholder="목표 개수">
+            <p class="winners-status" id="winnersStatus">총 펀딩이 목표 개수 이상이면 위너스가 열립니다.</p>
+          </div>
+        </div>
+      </section>
+
       <section class="panel collapsible-panel" id="settingsPanel">
         <div class="panel-header">
           <h2>설정 / 모집</h2>
@@ -3611,12 +3625,6 @@
             <button id="match4" type="button" data-match-size="4">4대4</button>
             <button id="match5" type="button" data-match-size="5" class="is-active">5대5</button>
           </div>
-        </div>
-
-        <div class="field">
-          <span>위너스리그</span>
-          <input id="winnersTarget" data-action="winners-target" type="number" min="0" step="100" inputmode="numeric" aria-label="위너스리그 목표 개수" placeholder="목표 개수">
-          <p class="winners-status" id="winnersStatus">총 펀딩이 목표 개수 이상이면 위너스가 열립니다.</p>
         </div>
 
         <div class="field">
@@ -3778,6 +3786,7 @@
       matchSize: 5,
       winnersTarget: 0,
       focusMode: false,
+      winnersCollapsed: false,
       settingsCollapsed: false,
       teamCollapsed: false,
       players: []
@@ -3786,6 +3795,8 @@
 
     const els = {
       fundingFocusBtn: document.getElementById("fundingFocusBtn"),
+      winnersPanel: document.getElementById("winnersPanel"),
+      winnersToggleBtn: document.getElementById("winnersToggleBtn"),
       settingsPanel: document.getElementById("settingsPanel"),
       settingsToggleBtn: document.getElementById("settingsToggleBtn"),
       teamSelectionPanel: document.getElementById("teamSelectionPanel"),
@@ -3846,6 +3857,7 @@
         matchSize: 5,
         winnersTarget: 0,
         focusMode: false,
+        winnersCollapsed: false,
         settingsCollapsed: false,
         teamCollapsed: false,
         players: []
@@ -3982,6 +3994,11 @@
         saveAndRender();
       });
 
+      els.winnersToggleBtn.addEventListener("click", () => {
+        state.winnersCollapsed = !state.winnersCollapsed;
+        saveAndRender();
+      });
+
       els.settingsToggleBtn.addEventListener("click", () => {
         state.settingsCollapsed = !state.settingsCollapsed;
         syncFocusModeFromPanels();
@@ -4000,6 +4017,7 @@
         state.title = "";
         state.winnersTarget = 0;
         state.focusMode = false;
+        state.winnersCollapsed = false;
         state.settingsCollapsed = false;
         state.teamCollapsed = false;
         toast("보드를 초기화했습니다.");
@@ -4177,6 +4195,7 @@
         const savedTitle = typeof saved.title === "string" ? saved.title : state.title;
         const savedWinnersTarget = normalizeNumber(saved.winnersTarget);
         const savedFocusMode = saved.focusMode === true;
+        const savedWinnersCollapsed = saved.winnersCollapsed === true;
         const savedSettingsCollapsed = typeof saved.settingsCollapsed === "boolean" ? saved.settingsCollapsed : savedFocusMode;
         const savedTeamCollapsed = typeof saved.teamCollapsed === "boolean" ? saved.teamCollapsed : savedFocusMode;
         state = {
@@ -4185,6 +4204,7 @@
           matchSize: saved.matchSize === 4 || saved.matchSize === 5 ? saved.matchSize : state.matchSize,
           winnersTarget: isLegacyState && savedWinnersTarget === 13000 ? 0 : savedWinnersTarget,
           focusMode: typeof saved.focusMode === "boolean" ? saved.focusMode : savedSettingsCollapsed && savedTeamCollapsed,
+          winnersCollapsed: savedWinnersCollapsed,
           settingsCollapsed: savedSettingsCollapsed,
           teamCollapsed: savedTeamCollapsed,
           players: Array.isArray(saved.players) ? saved.players.map(makePlayer).filter((player) => player.name) : state.players
@@ -4262,6 +4282,10 @@
       const teamOne = teamPlayers("1");
       const teamTwo = teamPlayers("2");
 
+      els.winnersPanel.classList.toggle("is-collapsed", state.winnersCollapsed);
+      els.winnersToggleBtn.setAttribute("aria-expanded", String(!state.winnersCollapsed));
+      els.winnersToggleBtn.textContent = state.winnersCollapsed ? "▾" : "▴";
+      els.winnersToggleBtn.title = state.winnersCollapsed ? "위너스리그 펼치기" : "위너스리그 접기";
       els.settingsPanel.classList.toggle("is-collapsed", state.settingsCollapsed);
       els.teamSelectionPanel.classList.toggle("is-collapsed", state.teamCollapsed);
       els.settingsToggleBtn.setAttribute("aria-expanded", String(!state.settingsCollapsed));
