@@ -1793,6 +1793,11 @@
       }
     }
 
+    body,
+    body * {
+      font-weight: 900 !important;
+    }
+
   </style>
 </head>
 <body>
@@ -2462,19 +2467,24 @@
       drawRoulette();
     }
 
-    function rouletteOptionValues() {
-      const current = Array.from(els.rouletteOptions.querySelectorAll("input"), (input) => input.value);
-      return Array.from({ length: rouletteOptionCount }, (_, index) => current[index] || `옵션${index + 1}`);
+    function rouletteRawOptionValues() {
+      return Array.from(els.rouletteOptions.querySelectorAll("input"), (input) => input.value);
     }
 
-    function renderRouletteOptions(values = rouletteOptionValues()) {
+    function rouletteOptionValues() {
+      const current = rouletteRawOptionValues();
+      return Array.from({ length: rouletteOptionCount }, (_, index) => current[index]?.trim() || `옵션${index + 1}`);
+    }
+
+    function renderRouletteOptions(values = rouletteRawOptionValues()) {
       els.rouletteOptions.replaceChildren();
       for (let index = 0; index < rouletteOptionCount; index += 1) {
         const input = document.createElement("input");
         input.className = "roulette-option";
         input.type = "text";
         input.maxLength = 12;
-        input.value = values[index] || `옵션${index + 1}`;
+        input.value = values[index] || "";
+        input.placeholder = `옵션${index + 1}`;
         input.setAttribute("aria-label", `원판 옵션 ${index + 1}`);
         input.style.borderLeftColor = rouletteColors[index];
         input.addEventListener("input", drawRoulette);
@@ -2488,7 +2498,7 @@
 
     function changeRouletteCount(change) {
       if (rouletteSpinning) return;
-      const values = rouletteOptionValues();
+      const values = rouletteRawOptionValues();
       rouletteOptionCount = clamp(rouletteOptionCount + change, 2, 8);
       rouletteRotation = 0;
       els.rouletteWheel.style.transition = "none";
@@ -2756,9 +2766,11 @@
       els.matchSummary.textContent = `${state.matchSize}대${state.matchSize}`;
       els.memberSummary.textContent = `${state.players.length}명`;
       els.winnerSummary.textContent = winnerOpen ? "열림" : "닫힘";
-      els.winnerRemaining.textContent = !state.winnersTarget
-        ? "목표 미설정"
-        : `${formatCount(winnerShortage)} 남음`;
+      els.winnerRemaining.textContent = winnerOpen
+        ? ""
+        : !state.winnersTarget
+          ? "목표 미설정"
+          : `${formatCount(winnerShortage)} 남음`;
       els.winnerSummaryCard.classList.toggle("open", winnerOpen);
       els.winnerSummaryCard.classList.toggle("closed", !winnerOpen);
       els.winnerTarget.value = state.winnersTarget || "";
@@ -2979,7 +2991,7 @@
         if (index === 3 && ranked.length > 4) {
           const divider = document.createElement("div");
           divider.className = "spectator-divider";
-          divider.textContent = "4등까지 관전자";
+          divider.textContent = "4등까지 옵저버";
           els.fundingList.appendChild(divider);
         }
       });
@@ -3092,7 +3104,7 @@
     }
 
     function roleLabel(role) {
-      if (role === "spectator") return "관전자";
+      if (role === "spectator") return "옵저버";
       if (role === "room") return "룸싸개";
       return "";
     }
