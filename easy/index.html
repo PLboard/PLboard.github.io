@@ -1244,6 +1244,555 @@
       }
     }
 
+    .board-pet {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      z-index: 70;
+      display: grid;
+      place-items: center;
+      width: 74px;
+      height: 74px;
+      padding: 0;
+      color: #ffffff;
+      background: var(--ink);
+      border: 3px solid #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 0 0 2px var(--ink), 0 10px 24px rgba(16, 24, 40, 0.2);
+      cursor: grab;
+      touch-action: none;
+      user-select: none;
+    }
+
+    .board-pet::before,
+    .board-pet::after {
+      content: "";
+      position: absolute;
+      top: 27px;
+      width: 7px;
+      height: 20px;
+      background: inherit;
+      border: 2px solid #ffffff;
+    }
+
+    .board-pet::before {
+      left: -8px;
+      border-right: 0;
+      border-radius: 4px 0 0 4px;
+    }
+
+    .board-pet::after {
+      right: -8px;
+      border-left: 0;
+      border-radius: 0 4px 4px 0;
+    }
+
+    .roulette-pet {
+      bottom: 112px;
+      background: #493626;
+    }
+
+    .board-pet:active {
+      cursor: grabbing;
+    }
+
+    .board-pet:focus-visible {
+      outline: 4px solid rgba(23, 92, 211, 0.3);
+      outline-offset: 4px;
+    }
+
+    .pet-display {
+      position: relative;
+      display: block;
+      width: 44px;
+      height: 44px;
+      background: #ffffff;
+      border: 3px solid #ffffff;
+      border-radius: 50%;
+    }
+
+    .timer-display {
+      background: #f8fafc;
+      box-shadow: inset 0 0 0 2px var(--blue);
+    }
+
+    .timer-display::before,
+    .timer-display::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 3px;
+      background: var(--ink);
+      border-radius: 3px;
+      transform-origin: 50% 100%;
+    }
+
+    .timer-display::before {
+      height: 13px;
+      transform: translate(-50%, -100%);
+    }
+
+    .timer-display::after {
+      height: 10px;
+      transform: translate(-50%, -100%) rotate(120deg);
+    }
+
+    .roulette-display {
+      background: conic-gradient(#f97066 0 25%, #53b1fd 0 50%, #fdb022 0 75%, #84cc16 0);
+      box-shadow: inset 0 0 0 2px #493626;
+    }
+
+    .roulette-display::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 8px;
+      height: 8px;
+      background: #493626;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .pet-antenna {
+      position: absolute;
+      top: 4px;
+      left: 50%;
+      width: 3px;
+      height: 10px;
+      background: #ffffff;
+      transform: translateX(-50%);
+    }
+
+    .pet-antenna::before {
+      content: "";
+      position: absolute;
+      top: -3px;
+      left: -3px;
+      width: 9px;
+      height: 7px;
+      background: #12b76a;
+      border-radius: 3px;
+    }
+
+    .pet-label {
+      position: absolute;
+      left: 50%;
+      bottom: 1px;
+      font-size: 9px;
+      font-weight: 900;
+      white-space: nowrap;
+      transform: translateX(-50%);
+    }
+
+    .board-pet.timer-running {
+      box-shadow: 0 0 0 3px #12b76a, 0 10px 24px rgba(16, 24, 40, 0.2);
+    }
+
+    .board-pet.timer-done {
+      box-shadow: 0 0 0 4px var(--red), 0 10px 24px rgba(16, 24, 40, 0.2);
+    }
+
+    .pet-tools {
+      position: fixed;
+      z-index: 69;
+      width: min(650px, calc(100vw - 24px));
+      max-height: calc(100vh - 16px);
+      padding: 14px;
+      color: var(--ink);
+      background: #ffffff;
+      border: 2px solid var(--ink);
+      border-radius: 6px;
+      box-shadow: 0 12px 30px rgba(16, 24, 40, 0.18);
+      overflow-y: auto;
+      cursor: grab;
+    }
+
+    .pet-tools[hidden] {
+      display: none;
+    }
+
+    .pet-tools.dragging {
+      cursor: grabbing;
+      user-select: none;
+    }
+
+    .pet-tools-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      cursor: grab;
+      user-select: none;
+    }
+
+    .pet-tools-head strong {
+      font-size: 19px;
+      font-weight: 950;
+    }
+
+    .pet-tool-pane[hidden] {
+      display: none;
+    }
+
+    .pet-close,
+    .pet-action {
+      display: inline-grid;
+      place-items: center;
+      padding: 0;
+      color: var(--ink);
+      background: #ffffff;
+      border: 2px solid var(--ink);
+      border-radius: 4px;
+      font-weight: 950;
+    }
+
+    .pet-close {
+      width: 34px;
+      height: 34px;
+      font-size: 22px;
+    }
+
+    .pet-timer-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(105px, 1fr)) 200px;
+      align-items: center;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .pet-time-field {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: end;
+      gap: 5px;
+      min-width: 0;
+    }
+
+    .pet-time-field input {
+      width: 100%;
+      min-width: 0;
+      min-height: 64px;
+      padding: 5px 3px;
+      color: #30343b;
+      background: #ffffff;
+      border: 2px solid #c8cdd4;
+      border-radius: 4px;
+      font-family: Arial, sans-serif;
+      font-size: 40px;
+      line-height: 1;
+      font-weight: 900;
+      text-align: center;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .pet-time-field span {
+      padding-bottom: 10px;
+      color: #344054;
+      font-size: 16px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .pet-main-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .pet-action {
+      min-height: 54px;
+      font-size: 16px;
+    }
+
+    .pet-action.primary {
+      color: #ffffff;
+      background: #159524;
+      border-color: #087315;
+    }
+
+    .pet-action.reset {
+      color: #ffffff;
+      background: #344054;
+      border-color: #1d2939;
+    }
+
+    .pet-quick-add {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 0;
+      margin: 14px -14px -14px;
+      border-top: 1px solid #d0d5dd;
+    }
+
+    .pet-quick-add button {
+      min-height: 44px;
+      padding: 6px 4px;
+      color: #475467;
+      background: #f7f8fa;
+      border: 0;
+      border-right: 1px solid #d0d5dd;
+      border-radius: 0;
+      font-size: 15px;
+      font-weight: 900;
+    }
+
+    .pet-quick-add button:last-child {
+      border-right: 0;
+    }
+
+    .pet-quick-add button:hover,
+    .pet-quick-add button:focus-visible {
+      color: #ffffff;
+      background: var(--blue);
+      outline: none;
+    }
+
+    .roulette-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .roulette-modes {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      margin-top: 12px;
+    }
+
+    .roulette-modes button {
+      min-height: 42px;
+      padding: 7px 10px;
+      color: #475467;
+      background: #f2f4f7;
+      border: 1px solid #98a2b3;
+      border-radius: 4px;
+      font-size: 17px;
+      font-weight: 950;
+    }
+
+    .roulette-modes button.active {
+      color: #ffffff;
+      background: #493626;
+      border-color: #493626;
+    }
+
+    .roulette-manual[hidden],
+    .roulette-loser[hidden] {
+      display: none;
+    }
+
+    .roulette-loser {
+      margin-top: 10px;
+      padding: 12px;
+      background: #fff4f2;
+      border: 2px solid #f0a39b;
+      border-radius: 4px;
+    }
+
+    .roulette-loser-summary {
+      color: var(--red);
+      font-size: 18px;
+      font-weight: 950;
+    }
+
+    .roulette-loser-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 9px;
+    }
+
+    .roulette-loser-chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 38px;
+      padding: 6px 10px;
+      color: #7a271a;
+      background: #ffffff;
+      border: 1px solid #f0a39b;
+      border-radius: 4px;
+      font-size: 17px;
+      font-weight: 950;
+    }
+
+    .roulette-controls > span {
+      margin-right: 4px;
+      color: #344054;
+      font-size: 17px;
+      font-weight: 900;
+    }
+
+    .roulette-count-btn {
+      width: 38px;
+      min-height: 38px;
+      padding: 0;
+      color: #344054;
+      background: #f2f4f7;
+      border: 1px solid #98a2b3;
+      border-radius: 4px;
+      font-size: 22px;
+      font-weight: 950;
+    }
+
+    .roulette-count {
+      min-width: 42px;
+      font-size: 18px;
+      font-weight: 950;
+      text-align: center;
+    }
+
+    .roulette-limit {
+      color: #667085;
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .roulette-options {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 7px;
+      margin-top: 10px;
+    }
+
+    .roulette-option {
+      min-width: 0;
+      min-height: 44px;
+      padding: 6px 9px;
+      border-width: 2px;
+      font-size: 17px;
+      font-weight: 900;
+    }
+
+    .roulette-stage {
+      display: grid;
+      justify-items: center;
+      margin-top: 12px;
+      padding: 14px;
+      background: #f6f1e8;
+      border: 1px solid #d8cfc2;
+    }
+
+    .roulette-wheel-box {
+      position: relative;
+      width: min(330px, 100%);
+      padding-top: 12px;
+    }
+
+    .roulette-wheel-clip {
+      width: 100%;
+      aspect-ratio: 1;
+      overflow: hidden;
+      border-radius: 50%;
+    }
+
+    .roulette-pointer {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      z-index: 2;
+      width: 0;
+      height: 0;
+      border-right: 13px solid transparent;
+      border-left: 13px solid transparent;
+      border-top: 32px solid #493626;
+      filter: drop-shadow(0 2px 1px rgba(0, 0, 0, 0.25));
+      transform: translateX(-50%);
+    }
+
+    .roulette-wheel {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 50%;
+      filter: drop-shadow(0 5px 2px rgba(73, 54, 38, 0.18));
+      transform: rotate(0deg);
+    }
+
+    .roulette-result {
+      min-height: 34px;
+      margin-top: 8px;
+      color: #493626;
+      font-size: 21px;
+      font-weight: 950;
+      text-align: center;
+    }
+
+    .roulette-spin {
+      min-width: 150px;
+      min-height: 50px;
+      margin-top: 8px;
+      padding: 8px 18px;
+      color: #ffffff;
+      background: var(--ink);
+      border: 2px solid var(--ink);
+      border-radius: 4px;
+      font-size: 19px;
+      font-weight: 950;
+    }
+
+    .roulette-spin:disabled {
+      opacity: 0.55;
+      cursor: wait;
+    }
+
+    @media (max-width: 720px) {
+      .pet-timer-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .pet-time-field {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 3px;
+      }
+
+      .pet-time-field span {
+        padding: 0;
+        text-align: center;
+      }
+
+      .pet-main-actions {
+        grid-column: 1 / -1;
+      }
+
+      .pet-quick-add {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .pet-quick-add button:nth-child(3) {
+        border-right: 0;
+      }
+
+      .pet-quick-add button:nth-child(-n + 3) {
+        border-bottom: 1px solid #d0d5dd;
+      }
+
+      .roulette-options {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 520px) {
+      .board-pet {
+        right: 14px;
+        bottom: 14px;
+        width: 68px;
+        height: 68px;
+      }
+
+      .roulette-pet {
+        bottom: 98px;
+      }
+
+      .pet-time-field input {
+        min-height: 56px;
+        font-size: 32px;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -1355,6 +1904,83 @@
     </section>
   </main>
 
+  <section class="pet-tools" id="petTools" aria-label="PL 펫 도구함" hidden>
+    <div class="pet-tools-head">
+      <strong id="petToolTitle">타이머</strong>
+      <button class="pet-close" id="petClose" type="button" aria-label="도구함 닫기" title="닫기">×</button>
+    </div>
+    <div class="pet-tool-pane" id="petTimerPane">
+      <div class="pet-timer-grid">
+      <label class="pet-time-field">
+        <input id="petTimerHours" type="number" min="0" max="99" value="0" inputmode="numeric" aria-label="타이머 시간">
+        <span>시간</span>
+      </label>
+      <label class="pet-time-field">
+        <input id="petTimerMinutes" type="number" min="0" max="59" value="0" inputmode="numeric" aria-label="타이머 분">
+        <span>분</span>
+      </label>
+      <label class="pet-time-field">
+        <input id="petTimerSeconds" type="number" min="0" max="59" value="0" inputmode="numeric" aria-label="타이머 초">
+        <span>초</span>
+      </label>
+      <div class="pet-main-actions">
+        <button class="pet-action primary" id="petTimerToggle" type="button">START</button>
+        <button class="pet-action reset" id="petTimerReset" type="button">RESET</button>
+      </div>
+      </div>
+      <div class="pet-quick-add" aria-label="타이머 시간 추가">
+        <button type="button" data-pet-add="10">+ 10초</button>
+        <button type="button" data-pet-add="60">+ 1분</button>
+        <button type="button" data-pet-add="300">+ 5분</button>
+        <button type="button" data-pet-add="600">+ 10분</button>
+        <button type="button" data-pet-add="1800">+ 30분</button>
+        <button type="button" data-pet-add="3600">+ 1시간</button>
+      </div>
+    </div>
+    <div class="pet-tool-pane" id="petRoulettePane" hidden>
+      <div class="roulette-modes" aria-label="룰렛 모드 선택">
+        <button class="active" type="button" data-roulette-mode="manual">일반 룰렛</button>
+        <button type="button" data-roulette-mode="loser">꼴찌 룰렛</button>
+      </div>
+      <div class="roulette-manual" id="rouletteManual">
+        <div class="roulette-controls">
+          <span>옵션 개수</span>
+          <button class="roulette-count-btn" id="rouletteMinus" type="button" aria-label="옵션 개수 줄이기">−</button>
+          <strong class="roulette-count" id="rouletteCount">6개</strong>
+          <button class="roulette-count-btn" id="roulettePlus" type="button" aria-label="옵션 개수 늘리기">+</button>
+          <small class="roulette-limit">2개~8개</small>
+        </div>
+        <div class="roulette-options" id="rouletteOptions"></div>
+      </div>
+      <div class="roulette-loser" id="rouletteLoser" hidden>
+        <p class="roulette-loser-summary" id="rouletteLoserSummary">펀딩 명단이 없습니다.</p>
+        <div class="roulette-loser-list" id="rouletteLoserList"></div>
+      </div>
+      <div class="roulette-stage">
+        <div class="roulette-wheel-box">
+          <span class="roulette-pointer" aria-hidden="true"></span>
+          <div class="roulette-wheel-clip">
+            <canvas class="roulette-wheel" id="rouletteWheel" width="640" height="640" aria-label="원판돌리기 원판"></canvas>
+          </div>
+        </div>
+        <output class="roulette-result" id="rouletteResult" aria-live="polite">돌리기 버튼을 눌러주세요.</output>
+        <button class="roulette-spin" id="rouletteSpin" type="button">원판 돌리기</button>
+      </div>
+    </div>
+  </section>
+
+  <button class="board-pet timer-pet" id="timerPet" type="button" data-pet-id="timer" data-pet-tool="timer" aria-label="타이머 펫 열기" title="타이머 · 드래그해서 이동">
+    <span class="pet-antenna" aria-hidden="true"></span>
+    <span class="pet-display timer-display" aria-hidden="true"></span>
+    <span class="pet-label" aria-hidden="true">TIMER</span>
+  </button>
+
+  <button class="board-pet roulette-pet" id="roulettePet" type="button" data-pet-id="roulette" data-pet-tool="roulette" aria-label="룰렛 펫 열기" title="룰렛 · 드래그해서 이동">
+    <span class="pet-antenna" aria-hidden="true"></span>
+    <span class="pet-display roulette-display" aria-hidden="true"></span>
+    <span class="pet-label" aria-hidden="true">룰렛</span>
+  </button>
+
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script>
@@ -1368,6 +1994,19 @@
 
     let state = loadState();
     let toastTimer = 0;
+    let petDrag = null;
+    let petToolsDrag = null;
+    let petToolsDetached = false;
+    let activePet = null;
+    let petTimerRemaining = 0;
+    let petTimerEnd = 0;
+    let petTimerInterval = 0;
+    let rouletteOptionCount = 6;
+    let rouletteMode = "manual";
+    let rouletteRotation = 0;
+    let rouletteSpinning = false;
+    let rouletteFinishTimer = 0;
+    const rouletteColors = ["#f97066", "#53b1fd", "#fdb022", "#84cc16", "#9b8afb", "#f79009", "#06aed4", "#ee46bc"];
     const recruitDraftSlots = { T: 1, Z: 1, P: 1 };
 
     const els = {
@@ -1391,6 +2030,33 @@
       teamTwoInputs: document.getElementById("teamTwoInputs"),
       fundingList: document.getElementById("fundingList"),
       resetBtn: document.getElementById("resetBtn"),
+      timerPet: document.getElementById("timerPet"),
+      roulettePet: document.getElementById("roulettePet"),
+      boardPets: Array.from(document.querySelectorAll(".board-pet")),
+      petTools: document.getElementById("petTools"),
+      petClose: document.getElementById("petClose"),
+      petToolTitle: document.getElementById("petToolTitle"),
+      petTimerPane: document.getElementById("petTimerPane"),
+      petRoulettePane: document.getElementById("petRoulettePane"),
+      petTimerHours: document.getElementById("petTimerHours"),
+      petTimerMinutes: document.getElementById("petTimerMinutes"),
+      petTimerSeconds: document.getElementById("petTimerSeconds"),
+      petTimerToggle: document.getElementById("petTimerToggle"),
+      petTimerReset: document.getElementById("petTimerReset"),
+      petTimeInputs: Array.from(document.querySelectorAll(".pet-time-field input")),
+      petAddButtons: Array.from(document.querySelectorAll("[data-pet-add]")),
+      rouletteMinus: document.getElementById("rouletteMinus"),
+      roulettePlus: document.getElementById("roulettePlus"),
+      rouletteCount: document.getElementById("rouletteCount"),
+      rouletteModeButtons: Array.from(document.querySelectorAll("[data-roulette-mode]")),
+      rouletteManual: document.getElementById("rouletteManual"),
+      rouletteLoser: document.getElementById("rouletteLoser"),
+      rouletteLoserSummary: document.getElementById("rouletteLoserSummary"),
+      rouletteLoserList: document.getElementById("rouletteLoserList"),
+      rouletteOptions: document.getElementById("rouletteOptions"),
+      rouletteWheel: document.getElementById("rouletteWheel"),
+      rouletteResult: document.getElementById("rouletteResult"),
+      rouletteSpin: document.getElementById("rouletteSpin"),
       toast: document.getElementById("toast")
     };
 
@@ -1469,7 +2135,582 @@
       els.resetBtn.addEventListener("click", resetBoard);
       window.addEventListener("scroll", syncSideSummary, { passive: true });
       window.addEventListener("resize", syncSideSummary);
+      window.addEventListener("resize", clampPetToViewport);
+      els.boardPets.forEach((pet) => {
+        pet.addEventListener("pointerdown", startPetDrag);
+        pet.addEventListener("pointermove", movePet);
+        pet.addEventListener("pointerup", endPetDrag);
+        pet.addEventListener("pointercancel", cancelPetDrag);
+        pet.addEventListener("click", handlePetKeyboardClick);
+      });
+      els.petClose.addEventListener("click", closePetTools);
+      els.petTools.addEventListener("pointerdown", startPetToolsDrag);
+      els.petTools.addEventListener("pointermove", movePetTools);
+      els.petTools.addEventListener("pointerup", endPetToolsDrag);
+      els.petTools.addEventListener("pointercancel", cancelPetToolsDrag);
+      els.petTimerToggle.addEventListener("click", togglePetTimer);
+      els.petTimerReset.addEventListener("click", resetPetTimer);
+      els.petTimeInputs.forEach((input) => input.addEventListener("change", syncPetTimerInputs));
+      els.petAddButtons.forEach((button) => button.addEventListener("click", addPetTimerTime));
+      els.rouletteMinus.addEventListener("click", () => changeRouletteCount(-1));
+      els.roulettePlus.addEventListener("click", () => changeRouletteCount(1));
+      els.rouletteModeButtons.forEach((button) => button.addEventListener("click", switchRouletteMode));
+      els.rouletteSpin.addEventListener("click", spinRoulette);
       syncSideSummary();
+      restorePetPositions();
+      renderPetTimer();
+      renderRouletteOptions();
+    }
+
+    function handlePetKeyboardClick(event) {
+      if (event.detail === 0) openPetTool(event.currentTarget);
+    }
+
+    function startPetDrag(event) {
+      if (event.button !== 0) return;
+      event.preventDefault();
+      const pet = event.currentTarget;
+      const rect = pet.getBoundingClientRect();
+      petDrag = {
+        pet,
+        pointerId: event.pointerId,
+        startX: event.clientX,
+        startY: event.clientY,
+        left: rect.left,
+        top: rect.top,
+        moved: false
+      };
+      pet.style.left = `${rect.left}px`;
+      pet.style.top = `${rect.top}px`;
+      pet.style.right = "auto";
+      pet.style.bottom = "auto";
+      pet.setPointerCapture(event.pointerId);
+    }
+
+    function movePet(event) {
+      if (!petDrag || event.pointerId !== petDrag.pointerId) return;
+      const deltaX = event.clientX - petDrag.startX;
+      const deltaY = event.clientY - petDrag.startY;
+      if (Math.hypot(deltaX, deltaY) > 5) petDrag.moved = true;
+      const pet = petDrag.pet;
+      const rect = pet.getBoundingClientRect();
+      const left = clamp(petDrag.left + deltaX, 8, window.innerWidth - rect.width - 8);
+      const top = clamp(petDrag.top + deltaY, 8, window.innerHeight - rect.height - 8);
+      pet.style.left = `${left}px`;
+      pet.style.top = `${top}px`;
+      if (!els.petTools.hidden && activePet === pet && !petToolsDetached) positionPetTools();
+    }
+
+    function endPetDrag(event) {
+      if (!petDrag || event.pointerId !== petDrag.pointerId) return;
+      const pet = petDrag.pet;
+      const moved = petDrag.moved;
+      pet.releasePointerCapture(event.pointerId);
+      petDrag = null;
+      separateOverlappingPets(pet);
+      savePetPosition(pet);
+      if (!moved) openPetTool(pet);
+    }
+
+    function cancelPetDrag(event) {
+      if (!petDrag || event.pointerId !== petDrag.pointerId) return;
+      petDrag = null;
+    }
+
+    function startPetToolsDrag(event) {
+      if (event.button !== 0) return;
+      if (event.target.closest("button, input, label, a, textarea, select")) return;
+      if (event.pointerType === "touch" && !event.target.closest(".pet-tools-head")) return;
+      event.preventDefault();
+      const rect = els.petTools.getBoundingClientRect();
+      petToolsDrag = {
+        pointerId: event.pointerId,
+        startX: event.clientX,
+        startY: event.clientY,
+        left: rect.left,
+        top: rect.top
+      };
+      els.petTools.style.left = `${rect.left}px`;
+      els.petTools.style.top = `${rect.top}px`;
+      els.petTools.setPointerCapture(event.pointerId);
+      els.petTools.classList.add("dragging");
+      petToolsDetached = true;
+    }
+
+    function movePetTools(event) {
+      if (!petToolsDrag || event.pointerId !== petToolsDrag.pointerId) return;
+      const rect = els.petTools.getBoundingClientRect();
+      const left = clamp(petToolsDrag.left + event.clientX - petToolsDrag.startX, 8, window.innerWidth - rect.width - 8);
+      const top = clamp(petToolsDrag.top + event.clientY - petToolsDrag.startY, 8, window.innerHeight - rect.height - 8);
+      els.petTools.style.left = `${left}px`;
+      els.petTools.style.top = `${top}px`;
+    }
+
+    function endPetToolsDrag(event) {
+      if (!petToolsDrag || event.pointerId !== petToolsDrag.pointerId) return;
+      els.petTools.releasePointerCapture(event.pointerId);
+      petToolsDrag = null;
+      els.petTools.classList.remove("dragging");
+      savePetToolsPosition();
+    }
+
+    function cancelPetToolsDrag(event) {
+      if (!petToolsDrag || event.pointerId !== petToolsDrag.pointerId) return;
+      petToolsDrag = null;
+      els.petTools.classList.remove("dragging");
+    }
+
+    function clampPet(value, fallback) {
+      const number = Number(value);
+      return Number.isFinite(number) ? number : fallback;
+    }
+
+    function clamp(value, minimum, maximum) {
+      return Math.min(Math.max(value, minimum), Math.max(minimum, maximum));
+    }
+
+    function restorePetPositions() {
+      els.boardPets.forEach((pet) => {
+        try {
+          const saved = localStorage.getItem(`pl-board-pet-position-v2-${pet.dataset.petId}`);
+          const legacy = pet.dataset.petId === "timer" ? localStorage.getItem("pl-board-pet-position-v1") : null;
+          const position = JSON.parse(saved || legacy);
+          if (!position) return;
+          pet.style.left = `${clampPet(position.left, 8)}px`;
+          pet.style.top = `${clampPet(position.top, 8)}px`;
+          pet.style.right = "auto";
+          pet.style.bottom = "auto";
+        } catch {
+          // Keep the default position for this pet when storage is unavailable.
+        }
+      });
+      requestAnimationFrame(clampPetToViewport);
+    }
+
+    function savePetPosition(pet) {
+      try {
+        const rect = pet.getBoundingClientRect();
+        localStorage.setItem(`pl-board-pet-position-v2-${pet.dataset.petId}`, JSON.stringify({ left: rect.left, top: rect.top }));
+      } catch {
+        // Position persistence is optional.
+      }
+    }
+
+    function clampPetToViewport() {
+      els.boardPets.forEach((pet) => {
+        if (!pet.style.left) return;
+        const rect = pet.getBoundingClientRect();
+        pet.style.left = `${clamp(rect.left, 8, window.innerWidth - rect.width - 8)}px`;
+        pet.style.top = `${clamp(rect.top, 8, window.innerHeight - rect.height - 8)}px`;
+      });
+      separateOverlappingPets(els.roulettePet);
+      if (!els.petTools.hidden) positionPetTools();
+    }
+
+    function separateOverlappingPets(movedPet) {
+      const otherPet = movedPet === els.timerPet ? els.roulettePet : els.timerPet;
+      const movedRect = movedPet.getBoundingClientRect();
+      const otherRect = otherPet.getBoundingClientRect();
+      const overlap = !(
+        movedRect.right < otherRect.left ||
+        movedRect.left > otherRect.right ||
+        movedRect.bottom < otherRect.top ||
+        movedRect.top > otherRect.bottom
+      );
+      if (!overlap) return;
+
+      const gap = 16;
+      const maximumTop = window.innerHeight - movedRect.height - 8;
+      const above = otherRect.top - movedRect.height - gap;
+      const below = otherRect.bottom + gap;
+      const preferredTop = movedPet === els.roulettePet
+        ? (above >= 8 ? above : below)
+        : (below <= maximumTop ? below : above);
+      const top = clamp(preferredTop, 8, maximumTop);
+      movedPet.style.left = `${clamp(movedRect.left, 8, window.innerWidth - movedRect.width - 8)}px`;
+      movedPet.style.top = `${top}px`;
+      movedPet.style.right = "auto";
+      movedPet.style.bottom = "auto";
+    }
+
+    function openPetTool(pet) {
+      if (!els.petTools.hidden && activePet === pet) {
+        closePetTools();
+        return;
+      }
+      activePet = pet;
+      els.petTools.hidden = false;
+      els.boardPets.forEach((item) => item.setAttribute("aria-expanded", item === pet ? "true" : "false"));
+      setPetTool(pet.dataset.petTool);
+      petToolsDetached = restorePetToolsPosition(pet.dataset.petTool);
+      requestAnimationFrame(positionPetTools);
+    }
+
+    function closePetTools() {
+      els.petTools.hidden = true;
+      els.boardPets.forEach((pet) => pet.setAttribute("aria-expanded", "false"));
+      activePet = null;
+    }
+
+    function positionPetTools() {
+      if (!activePet) return;
+      const panelRect = els.petTools.getBoundingClientRect();
+      if (petToolsDetached) {
+        els.petTools.style.left = `${clamp(panelRect.left, 8, window.innerWidth - panelRect.width - 8)}px`;
+        els.petTools.style.top = `${clamp(panelRect.top, 8, window.innerHeight - panelRect.height - 8)}px`;
+        return;
+      }
+      const petRect = activePet.getBoundingClientRect();
+      const placeLeft = petRect.left > window.innerWidth / 2;
+      const left = placeLeft ? petRect.left - panelRect.width - 12 : petRect.right + 12;
+      const top = clamp(petRect.top, 8, window.innerHeight - panelRect.height - 8);
+      els.petTools.style.left = `${clamp(left, 8, window.innerWidth - panelRect.width - 8)}px`;
+      els.petTools.style.top = `${top}px`;
+    }
+
+    function restorePetToolsPosition(tool) {
+      try {
+        const position = JSON.parse(localStorage.getItem(`pl-board-tool-position-v1-${tool}`));
+        if (!position) return false;
+        els.petTools.style.left = `${clampPet(position.left, 8)}px`;
+        els.petTools.style.top = `${clampPet(position.top, 8)}px`;
+        return true;
+      } catch {
+        return false;
+      }
+    }
+
+    function savePetToolsPosition() {
+      if (!activePet) return;
+      try {
+        const rect = els.petTools.getBoundingClientRect();
+        localStorage.setItem(`pl-board-tool-position-v1-${activePet.dataset.petTool}`, JSON.stringify({ left: rect.left, top: rect.top }));
+      } catch {
+        // Tool window positioning remains available for the current session.
+      }
+    }
+
+    function setPetTool(tool) {
+      const rouletteActive = tool === "roulette";
+      els.petTimerPane.hidden = rouletteActive;
+      els.petRoulettePane.hidden = !rouletteActive;
+      els.petToolTitle.textContent = rouletteActive ? "원판돌리기" : "타이머";
+      if (rouletteActive) {
+        renderLoserRoulette();
+        drawRoulette();
+      }
+    }
+
+    function switchRouletteMode(event) {
+      if (rouletteSpinning) return;
+      rouletteMode = event.currentTarget.dataset.rouletteMode;
+      const loserMode = rouletteMode === "loser";
+      els.rouletteManual.hidden = loserMode;
+      els.rouletteLoser.hidden = !loserMode;
+      els.rouletteModeButtons.forEach((button) => button.classList.toggle("active", button === event.currentTarget));
+      rouletteRotation = 0;
+      els.rouletteWheel.style.transition = "none";
+      els.rouletteWheel.style.transform = "rotate(0deg)";
+      if (loserMode) {
+        renderLoserRoulette();
+      } else {
+        els.rouletteResult.textContent = "돌리기 버튼을 눌러주세요.";
+        els.rouletteSpin.textContent = "원판 돌리기";
+        setRouletteControlsDisabled(false);
+      }
+      drawRoulette();
+      requestAnimationFrame(positionPetTools);
+    }
+
+    function loserRouletteCandidates() {
+      if (!state.players.length) return [];
+      const minimumFunding = Math.min(...state.players.map((player) => player.funding));
+      return state.players.filter((player) => player.funding === minimumFunding);
+    }
+
+    function activeRouletteEntries() {
+      if (rouletteMode === "loser") {
+        return loserRouletteCandidates().map((player) => ({ id: player.id, name: player.name }));
+      }
+      return rouletteOptionValues().map((name) => ({ id: "", name }));
+    }
+
+    function renderLoserRoulette() {
+      if (rouletteMode !== "loser" || rouletteSpinning) return;
+      const candidates = loserRouletteCandidates();
+      els.rouletteLoserList.replaceChildren();
+      candidates.forEach((player) => {
+        const chip = document.createElement("span");
+        chip.className = "roulette-loser-chip";
+        chip.textContent = player.name;
+        els.rouletteLoserList.appendChild(chip);
+      });
+
+      if (!candidates.length) {
+        els.rouletteLoserSummary.textContent = "펀딩 명단이 없습니다.";
+        els.rouletteResult.textContent = "선수를 먼저 등록해 주세요.";
+        els.rouletteSpin.textContent = "꼴찌 룰렛 돌리기";
+      } else {
+        const minimumFunding = candidates[0].funding;
+        els.rouletteLoserSummary.textContent = `최저 ${formatCount(minimumFunding)} · 동점 ${candidates.length}명`;
+        els.rouletteResult.textContent = candidates.length === 1
+          ? `${candidates[0].name} 선수가 단독 룸싸개입니다.`
+          : "최저 펀딩 동점자 중 룸싸개를 정합니다.";
+        els.rouletteSpin.textContent = candidates.length === 1 ? "동점자 없음" : "꼴찌 룰렛 돌리기";
+      }
+      setRouletteControlsDisabled(candidates.length < 2);
+      drawRoulette();
+    }
+
+    function rouletteOptionValues() {
+      const current = Array.from(els.rouletteOptions.querySelectorAll("input"), (input) => input.value);
+      return Array.from({ length: rouletteOptionCount }, (_, index) => current[index] || `옵션${index + 1}`);
+    }
+
+    function renderRouletteOptions(values = rouletteOptionValues()) {
+      els.rouletteOptions.replaceChildren();
+      for (let index = 0; index < rouletteOptionCount; index += 1) {
+        const input = document.createElement("input");
+        input.className = "roulette-option";
+        input.type = "text";
+        input.maxLength = 12;
+        input.value = values[index] || `옵션${index + 1}`;
+        input.setAttribute("aria-label", `원판 옵션 ${index + 1}`);
+        input.style.borderLeftColor = rouletteColors[index];
+        input.addEventListener("input", drawRoulette);
+        els.rouletteOptions.appendChild(input);
+      }
+      els.rouletteCount.textContent = `${rouletteOptionCount}개`;
+      els.rouletteMinus.disabled = rouletteOptionCount <= 2;
+      els.roulettePlus.disabled = rouletteOptionCount >= 8;
+      drawRoulette();
+    }
+
+    function changeRouletteCount(change) {
+      if (rouletteSpinning) return;
+      const values = rouletteOptionValues();
+      rouletteOptionCount = clamp(rouletteOptionCount + change, 2, 8);
+      rouletteRotation = 0;
+      els.rouletteWheel.style.transition = "none";
+      els.rouletteWheel.style.transform = "rotate(0deg)";
+      els.rouletteResult.textContent = "돌리기 버튼을 눌러주세요.";
+      renderRouletteOptions(values);
+      requestAnimationFrame(positionPetTools);
+    }
+
+    function drawRoulette() {
+      const context = els.rouletteWheel.getContext("2d");
+      const size = els.rouletteWheel.width;
+      const center = size / 2;
+      const radius = center - 24;
+      const entries = activeRouletteEntries();
+      context.clearRect(0, 0, size, size);
+
+      if (!entries.length) {
+        context.beginPath();
+        context.arc(center, center, radius, 0, Math.PI * 2);
+        context.fillStyle = "#e4e7ec";
+        context.fill();
+        context.strokeStyle = "#667085";
+        context.lineWidth = 9;
+        context.stroke();
+        context.fillStyle = "#475467";
+        context.font = "900 34px Malgun Gothic, sans-serif";
+        context.textAlign = "center";
+        context.textBaseline = "middle";
+        context.fillText("명단 없음", center, center);
+        return;
+      }
+
+      const arc = Math.PI * 2 / entries.length;
+
+      entries.forEach((entry, index) => {
+        const start = -Math.PI / 2 + index * arc;
+        const end = start + arc;
+        context.beginPath();
+        context.moveTo(center, center);
+        context.arc(center, center, radius, start, end);
+        context.closePath();
+        context.fillStyle = rouletteColors[index % rouletteColors.length];
+        context.fill();
+        context.strokeStyle = "rgba(73, 54, 38, 0.45)";
+        context.lineWidth = 2;
+        context.stroke();
+
+        const angle = start + arc / 2;
+        const textRadius = entries.length === 1 ? 0 : radius * 0.62;
+        const x = center + Math.cos(angle) * textRadius;
+        const y = center + Math.sin(angle) * textRadius;
+        const label = String(entry.name || `옵션${index + 1}`).slice(0, 10);
+        context.font = "900 30px Malgun Gothic, sans-serif";
+        context.textAlign = "center";
+        context.textBaseline = "middle";
+        const boxWidth = Math.min(180, Math.max(82, context.measureText(label).width + 28));
+        context.fillStyle = "rgba(255, 255, 255, 0.9)";
+        context.fillRect(x - boxWidth / 2, y - 25, boxWidth, 50);
+        context.strokeStyle = "rgba(73, 54, 38, 0.28)";
+        context.lineWidth = 2;
+        context.strokeRect(x - boxWidth / 2, y - 25, boxWidth, 50);
+        context.fillStyle = "#493626";
+        context.fillText(label, x, y + 1, boxWidth - 16);
+      });
+
+      context.beginPath();
+      context.arc(center, center, radius, 0, Math.PI * 2);
+      context.strokeStyle = "#493626";
+      context.lineWidth = 9;
+      context.stroke();
+      context.beginPath();
+      context.arc(center, center, 14, 0, Math.PI * 2);
+      context.fillStyle = "#493626";
+      context.fill();
+    }
+
+    function spinRoulette() {
+      if (rouletteSpinning) return;
+      const entries = activeRouletteEntries();
+      if (rouletteMode === "loser" && entries.length < 2) {
+        toast(entries.length ? "꼴찌 동점자가 없습니다." : "펀딩 명단이 없습니다.");
+        return;
+      }
+      if (!entries.length) return;
+      const randomIndex = secureRouletteIndex(entries.length);
+      const segmentDegrees = 360 / entries.length;
+      const desiredRotation = (360 - (randomIndex + 0.5) * segmentDegrees + 360) % 360;
+      const currentRotation = ((rouletteRotation % 360) + 360) % 360;
+      const adjustment = (desiredRotation - currentRotation + 360) % 360;
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const duration = reducedMotion ? 80 : 4000;
+      rouletteRotation += (reducedMotion ? 0 : 5 * 360) + adjustment;
+      rouletteSpinning = true;
+      setRouletteControlsDisabled(true);
+      els.rouletteResult.textContent = "돌리는 중...";
+      els.rouletteWheel.style.transition = `transform ${duration}ms cubic-bezier(0.15, 0.72, 0.15, 1)`;
+      requestAnimationFrame(() => {
+        els.rouletteWheel.style.transform = `rotate(${rouletteRotation}deg)`;
+      });
+      window.clearTimeout(rouletteFinishTimer);
+      rouletteFinishTimer = window.setTimeout(() => {
+        rouletteSpinning = false;
+        setRouletteControlsDisabled(false);
+        const selected = entries[randomIndex];
+        if (rouletteMode === "loser") {
+          assignRoomMaker(selected.id);
+          els.rouletteResult.textContent = `룸싸개: ${selected.name}`;
+          els.rouletteSpin.textContent = "다시 돌리기";
+        } else {
+          els.rouletteResult.textContent = `결과: ${selected.name}`;
+        }
+      }, duration + 80);
+    }
+
+    function assignRoomMaker(playerId) {
+      const selected = findPlayer(playerId);
+      if (!selected) return;
+      const tied = rankedPlayers().filter((player) => player.funding === selected.funding && player.id !== selected.id);
+      tied.push(selected);
+      tied.forEach((player, index) => {
+        player.roleOrder = index + 1;
+      });
+      save();
+      render();
+      toast(`${selected.name} 선수를 룸싸개로 지정했습니다.`);
+    }
+
+    function secureRouletteIndex(count) {
+      if (!window.crypto?.getRandomValues) return Math.floor(Math.random() * count);
+      const value = new Uint32Array(1);
+      window.crypto.getRandomValues(value);
+      return Math.floor(value[0] / 4294967296 * count);
+    }
+
+    function setRouletteControlsDisabled(disabled) {
+      const loserCandidates = rouletteMode === "loser" ? loserRouletteCandidates() : [];
+      els.rouletteSpin.disabled = disabled || (rouletteMode === "loser" && loserCandidates.length < 2);
+      els.rouletteMinus.disabled = disabled || rouletteOptionCount <= 2;
+      els.roulettePlus.disabled = disabled || rouletteOptionCount >= 8;
+      els.rouletteModeButtons.forEach((button) => button.disabled = rouletteSpinning);
+      els.rouletteOptions.querySelectorAll("input").forEach((input) => input.disabled = disabled);
+    }
+
+    function syncPetTimerInputs() {
+      if (petTimerInterval) stopPetTimer();
+      const hours = clamp(numberValue(els.petTimerHours.value), 0, 99);
+      const minutes = clamp(numberValue(els.petTimerMinutes.value), 0, 59);
+      const seconds = clamp(numberValue(els.petTimerSeconds.value), 0, 59);
+      petTimerRemaining = hours * 3600 + minutes * 60 + seconds;
+      els.timerPet.classList.remove("timer-done");
+      renderPetTimer();
+    }
+
+    function addPetTimerTime(event) {
+      const amount = numberValue(event.currentTarget.dataset.petAdd);
+      if (petTimerInterval) {
+        petTimerEnd += amount * 1000;
+        petTimerRemaining = Math.max(0, Math.ceil((petTimerEnd - Date.now()) / 1000));
+      } else {
+        syncPetTimerInputs();
+        petTimerRemaining = Math.min(359999, petTimerRemaining + amount);
+      }
+      els.timerPet.classList.remove("timer-done");
+      renderPetTimer();
+    }
+
+    function togglePetTimer() {
+      if (petTimerInterval) {
+        petTimerRemaining = Math.max(0, Math.ceil((petTimerEnd - Date.now()) / 1000));
+        stopPetTimer();
+        renderPetTimer();
+        return;
+      }
+      syncPetTimerInputs();
+      if (petTimerRemaining <= 0) {
+        toast("타이머 시간을 설정해 주세요.");
+        return;
+      }
+      petTimerEnd = Date.now() + petTimerRemaining * 1000;
+      els.timerPet.classList.remove("timer-done");
+      els.timerPet.classList.add("timer-running");
+      els.petTimeInputs.forEach((input) => input.disabled = true);
+      els.petTimerToggle.textContent = "PAUSE";
+      els.petTimerToggle.setAttribute("aria-label", "타이머 일시정지");
+      els.petTimerToggle.title = "일시정지";
+      petTimerInterval = window.setInterval(tickPetTimer, 250);
+    }
+
+    function tickPetTimer() {
+      petTimerRemaining = Math.max(0, Math.ceil((petTimerEnd - Date.now()) / 1000));
+      renderPetTimer();
+      if (petTimerRemaining > 0) return;
+      stopPetTimer();
+      els.timerPet.classList.add("timer-done");
+      toast("타이머가 끝났습니다.");
+    }
+
+    function stopPetTimer() {
+      window.clearInterval(petTimerInterval);
+      petTimerInterval = 0;
+      els.timerPet.classList.remove("timer-running");
+      els.petTimeInputs.forEach((input) => input.disabled = false);
+      els.petTimerToggle.textContent = "START";
+      els.petTimerToggle.setAttribute("aria-label", "타이머 시작");
+      els.petTimerToggle.title = "시작";
+    }
+
+    function resetPetTimer() {
+      stopPetTimer();
+      petTimerRemaining = 0;
+      els.timerPet.classList.remove("timer-done");
+      renderPetTimer();
+    }
+
+    function renderPetTimer() {
+      const hours = Math.floor(petTimerRemaining / 3600);
+      const minutes = Math.floor((petTimerRemaining % 3600) / 60);
+      const seconds = petTimerRemaining % 60;
+      els.petTimerHours.value = String(hours).padStart(2, "0");
+      els.petTimerMinutes.value = String(minutes).padStart(2, "0");
+      els.petTimerSeconds.value = String(seconds).padStart(2, "0");
     }
 
     function syncSideSummary() {
@@ -1503,6 +2744,7 @@
       renderRecruitment();
       renderTeamInputs();
       renderFunding(ranked);
+      if (rouletteMode === "loser") renderLoserRoulette();
     }
 
     function renderSummary(ranked) {
