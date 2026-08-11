@@ -752,6 +752,19 @@
       white-space: nowrap;
     }
 
+    .winner-status-line {
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 4px 8px;
+    }
+
+    .winner-remaining {
+      color: currentColor;
+      font-size: 17px;
+      font-weight: 900;
+    }
+
     .summary-item.open {
       color: var(--green);
       background: #ecfdf3;
@@ -1106,34 +1119,164 @@
       }
     }
 
+    @media (min-width: 1640px) {
+      .topbar {
+        position: static;
+        top: auto;
+      }
+
+      body.side-summary-active .topbar {
+        position: fixed;
+        top: 20px;
+        left: max(18px, calc((100vw - 1180px) / 2 - 224px));
+        z-index: 20;
+        width: 205px;
+        padding: 16px 14px;
+        background: #ffffff;
+        border: 2px solid var(--ink);
+        border-radius: 5px;
+        box-shadow: 0 10px 28px rgba(16, 24, 40, 0.14);
+        animation: side-summary-in 180ms ease-out;
+      }
+
+      body.side-summary-active .title-row {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      body.side-summary-active h1 {
+        font-size: 30px;
+      }
+
+      body.side-summary-active .version-label {
+        padding: 4px 7px;
+        font-size: 15px;
+      }
+
+      body.side-summary-active .summary {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 7px;
+        margin-top: 12px;
+      }
+
+      body.side-summary-active .summary-item {
+        min-height: 68px;
+        padding: 8px 10px;
+      }
+
+      body.side-summary-active .summary-item span {
+        font-size: 15px;
+      }
+
+      body.side-summary-active .summary-item strong {
+        margin-top: 2px;
+        font-size: 25px;
+      }
+
+      body.side-summary-active .member-summary-card {
+        display: none;
+      }
+
+      body.side-summary-active .winner-status-line {
+        display: grid;
+        gap: 3px;
+      }
+
+      body.side-summary-active #winnerSummary {
+        font-size: 18px;
+        white-space: normal;
+      }
+
+      body.side-summary-active .winner-remaining {
+        font-size: 16px;
+      }
+
+      .funding-head {
+        padding-block: 7px;
+        font-size: 16px;
+      }
+
+      .funding-row {
+        min-height: 64px;
+        padding-block: 4px;
+      }
+
+      .rank,
+      .funding-row .player-name {
+        font-size: 24px;
+      }
+
+      .funding-input {
+        min-height: 48px;
+        font-size: 28px;
+      }
+
+      .role {
+        font-size: 18px;
+      }
+
+      .memo-input {
+        min-height: 46px;
+        font-size: 18px;
+      }
+
+      .tie-controls button {
+        width: 34px;
+        height: 40px;
+        font-size: 17px;
+      }
+
+      .spectator-divider {
+        margin-block: 3px;
+        font-size: 17px;
+      }
+    }
+
+    @keyframes side-summary-in {
+      from {
+        opacity: 0;
+        transform: translateX(-14px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
   </style>
 </head>
 <body>
   <main class="app">
-    <header class="topbar">
-      <div class="title-row">
-        <h1>피엘보드</h1>
-        <span class="version-label">아재버전</span>
-      </div>
-      <div class="summary">
-        <div class="summary-item">
-          <span>총 펀딩</span>
-          <strong id="totalFunding">0개</strong>
+    <div class="topbar-slot" id="topbarSlot">
+      <header class="topbar" id="topbar">
+        <div class="title-row">
+          <h1>피엘보드</h1>
+          <span class="version-label">아재버전</span>
         </div>
-        <div class="summary-item">
-          <span>매치</span>
-          <strong id="matchSummary">5대5</strong>
+        <div class="summary">
+          <div class="summary-item">
+            <span>총 펀딩</span>
+            <strong id="totalFunding">0개</strong>
+          </div>
+          <div class="summary-item">
+            <span>매치</span>
+            <strong id="matchSummary">5대5</strong>
+          </div>
+          <div class="summary-item member-summary-card">
+            <span>멤버</span>
+            <strong id="memberSummary">0명</strong>
+          </div>
+          <div class="summary-item closed" id="winnerSummaryCard">
+            <span>위너스</span>
+            <div class="winner-status-line">
+              <strong id="winnerSummary">닫힘</strong>
+              <small class="winner-remaining" id="winnerRemaining">목표 미설정</small>
+            </div>
+          </div>
         </div>
-        <div class="summary-item">
-          <span>멤버</span>
-          <strong id="memberSummary">0명</strong>
-        </div>
-        <div class="summary-item closed" id="winnerSummaryCard">
-          <span>위너스</span>
-          <strong id="winnerSummary">닫힘</strong>
-        </div>
-      </div>
-    </header>
+      </header>
+    </div>
 
     <section class="section">
       <div class="section-title">
@@ -1233,8 +1376,11 @@
       memberSummary: document.getElementById("memberSummary"),
       winnerSummaryCard: document.getElementById("winnerSummaryCard"),
       winnerSummary: document.getElementById("winnerSummary"),
+      winnerRemaining: document.getElementById("winnerRemaining"),
       winnerTarget: document.getElementById("winnerTarget"),
       winnerMessage: document.getElementById("winnerMessage"),
+      topbar: document.getElementById("topbar"),
+      topbarSlot: document.getElementById("topbarSlot"),
       matchButtons: Array.from(document.querySelectorAll("[data-match]")),
       recruitRows: Array.from(document.querySelectorAll("[data-recruit-race]")),
       recruitAddButtons: Array.from(document.querySelectorAll("[data-recruit-add]")),
@@ -1321,6 +1467,25 @@
 
       els.recruitAddButtons.forEach((button) => button.addEventListener("click", addRecruitSlot));
       els.resetBtn.addEventListener("click", resetBoard);
+      window.addEventListener("scroll", syncSideSummary, { passive: true });
+      window.addEventListener("resize", syncSideSummary);
+      syncSideSummary();
+    }
+
+    function syncSideSummary() {
+      const wideLayout = window.matchMedia("(min-width: 1640px)").matches;
+      if (!wideLayout) {
+        document.body.classList.remove("side-summary-active");
+        els.topbarSlot.style.height = "";
+        return;
+      }
+
+      const sideActive = document.body.classList.contains("side-summary-active");
+      if (!sideActive) {
+        els.topbarSlot.style.height = `${els.topbar.offsetHeight}px`;
+      }
+      const activationPoint = els.topbarSlot.offsetTop + els.topbarSlot.offsetHeight;
+      document.body.classList.toggle("side-summary-active", window.scrollY > activationPoint);
     }
 
     function addRecruitSlot(event) {
@@ -1348,11 +1513,10 @@
       els.totalFunding.textContent = formatCount(total);
       els.matchSummary.textContent = `${state.matchSize}대${state.matchSize}`;
       els.memberSummary.textContent = `${state.players.length}명`;
-      els.winnerSummary.textContent = winnerOpen
-        ? "열림"
-        : state.winnersTarget
-          ? `닫힘 (${formatCount(winnerShortage)} 부족)`
-          : "닫힘";
+      els.winnerSummary.textContent = winnerOpen ? "열림" : "닫힘";
+      els.winnerRemaining.textContent = !state.winnersTarget
+        ? "목표 미설정"
+        : `${formatCount(winnerShortage)} 남음`;
       els.winnerSummaryCard.classList.toggle("open", winnerOpen);
       els.winnerSummaryCard.classList.toggle("closed", !winnerOpen);
       els.winnerTarget.value = state.winnersTarget || "";
